@@ -1,0 +1,214 @@
+"use client";
+
+import { useState } from "react";
+import { X, Save, Send } from "lucide-react";
+import Link from "next/link";
+import { AppShell } from "@/components/shared/app-shell";
+import { MapCanvas } from "@/components/shared/map-canvas";
+import { TargetStationSelect } from "./components/target-station-select";
+import { CoordinatesInput } from "./components/coordinates-input";
+import { ObservationTypePicker } from "./components/observation-type-picker";
+import { CongestionLevelSlider } from "./components/congestion-level-slider";
+import { ObstructionImpactSlider } from "./components/obstruction-impact-slider";
+import { FieldEvidenceUploader } from "./components/field-evidence-uploader";
+import { AudioNoteRecorder } from "./components/audio-note-recorder";
+import { AiExtractionPanel } from "./components/ai-extraction-panel";
+import { useSurveyForm } from "./hooks/use-survey-form";
+import { useSubmitSurvey } from "./hooks/use-submit-survey";
+import { useSurveyDraftStore } from "./store/survey-draft-store";
+import { cn } from "@/lib/utils";
+import type { ObservationType, CongestionLevel } from "@/entities/survey";
+
+export function SurveyFormView() {
+  const {
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useSurveyForm();
+
+  const draft = useSurveyDraftStore();
+  const { mutate: submitSurvey, isPending } = useSubmitSurvey();
+
+  // Local state drives the UI — no react-hook-form watch() needed.
+  // setValue keeps react-hook-form in sync for validation / submit.
+  const [stationId, setStationIdState] = useState<string>(
+    draft.stationId ?? "",
+  );
+  const [coordinates, setCoordinatesState] = useState(
+    draft.coordinates ?? { lat: -6.2023, lng: 106.8228 },
+  );
+  const [observationType, setObservationTypeState] = useState<ObservationType>(
+    draft.observationType,
+  );
+  const [congestionLevel, setCongestionLevelState] = useState<CongestionLevel>(
+    draft.congestionLevel,
+  );
+  const [obstructionImpact, setObstructionImpactState] = useState<number>(
+    draft.obstructionImpactPercent ?? 65,
+  );
+  const [photoUrls, setPhotoUrlsState] = useState<string[]>(
+    draft.photoUrls ?? [],
+  );
+
+  // Setters — update local state + rhf internal store + draft simultaneously
+  function setStationId(v: string) {
+    setStationIdState(v);
+    setValue("stationId", v, { shouldDirty: true });
+    draft.setField("stationId", v);
+  }
+  function setCoordinates(v: { lat: number; lng: number }) {
+    setCoordinatesState(v);
+    setValue("coordinates", v, { shouldDirty: true });
+    draft.setField("coordinates", v);
+  }
+  function setObservationType(v: ObservationType) {
+    setObservationTypeState(v);
+    setValue("observationType", v, { shouldDirty: true });
+    draft.setField("observationType", v);
+  }
+  function setCongestionLevel(v: CongestionLevel) {
+    setCongestionLevelState(v);
+    setValue("congestionLevel", v, { shouldDirty: true });
+    draft.setField("congestionLevel", v);
+  }
+  function setObstructionImpact(v: number) {
+    setObstructionImpactState(v);
+    setValue("obstructionImpactPercent", v, { shouldDirty: true });
+    draft.setField("obstructionImpactPercent", v);
+  }
+  function addPhoto(url: string) {
+    const next = [...photoUrls, url];
+    setPhotoUrlsState(next);
+    setValue("photoUrls", next, { shouldDirty: true });
+    draft.setField("photoUrls", next);
+  }
+  function removePhoto(url: string) {
+    const next = photoUrls.filter((u) => u !== url);
+    setPhotoUrlsState(next);
+    setValue("photoUrls", next, { shouldDirty: true });
+    draft.setField("photoUrls", next);
+  }
+
+  const saveDraft = () => {
+    draft.setField("stationId", stationId);
+    draft.setField("coordinates", coordinates);
+    draft.setField("observationType", observationType);
+    draft.setField("congestionLevel", congestionLevel);
+    draft.setField("obstructionImpactPercent", obstructionImpact);
+    draft.setField("photoUrls", photoUrls);
+  };
+
+  const onSubmit = handleSubmit((data) => {
+    submitSurvey({
+      station_id: data.stationId,
+      channel_id: "",
+      surveyor_name: "Operator Admin",
+      coordinates: data.coordinates,
+      observation_type: data.observationType,
+      congestion_level: data.congestionLevel,
+      obstruction_impact_percent: data.obstructionImpactPercent,
+      raw_data: {
+        photo_urls: data.photoUrls,
+        manual_notes: data.manualNotes ?? "",
+      },
+      ai_extraction_summary:
+        "Detected heavy pedestrian bottleneck at South Exit due to illegally parked motorcycles.",
+    });
+  });
+
+  return (
+    <AppShell showSearch={false}>
+      {/* Background map */}
+      <div className="absolute inset-0">
+        <MapCanvas />
+      </div>
+
+      {/* Modal overlay */}
+      <div className="absolute inset-0 flex items-start justify-start p-4 z-10 pointer-events-none">
+        <div className="pointer-events-auto bg-[#1e2d3d] text-white rounded-2xl shadow-2xl w-[340px] max-h-[88vh] flex flex-col">
+          {/* Modal header */}
+          <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-white/10 shrink-0">
+            <h2 className="font-bold text-base text-white">New Field Survey</h2>
+            <Link
+              href="/dashboard"
+              className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+            >
+              <X size={14} />
+            </Link>
+          </div>
+
+          {/* Scrollable form body */}
+          <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4 scrollbar-thin">
+            <TargetStationSelect
+              value={stationId}
+              onChange={setStationId}
+              error={errors.stationId?.message}
+            />
+
+            <CoordinatesInput value={coordinates} onChange={setCoordinates} />
+
+            <ObservationTypePicker
+              value={observationType}
+              onChange={setObservationType}
+            />
+
+            <div className="bg-[#253344] rounded-lg px-4 py-3 space-y-3">
+              <CongestionLevelSlider
+                value={congestionLevel}
+                onChange={setCongestionLevel}
+              />
+              <ObstructionImpactSlider
+                value={obstructionImpact}
+                onChange={setObstructionImpact}
+              />
+            </div>
+
+            <FieldEvidenceUploader
+              photoUrls={photoUrls}
+              onAdd={addPhoto}
+              onRemove={removePhoto}
+            />
+
+            <AudioNoteRecorder
+              onRecorded={(url) => draft.setField("audioNoteUrl", url)}
+            />
+
+            <AiExtractionPanel />
+          </div>
+
+          {/* Footer actions */}
+          <div className="px-5 py-4 border-t border-white/10 flex gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={saveDraft}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-white/20 text-sm font-medium text-gray-300 hover:bg-white/10 transition-colors"
+            >
+              <Save size={14} />
+              Save Draft
+            </button>
+            <button
+              type="button"
+              onClick={onSubmit}
+              disabled={isPending}
+              className={cn(
+                "flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-bold text-white transition-all",
+                isPending
+                  ? "bg-blue-700 cursor-wait opacity-70"
+                  : "bg-blue-600 hover:bg-blue-700",
+              )}
+            >
+              {isPending ? (
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <>
+                  Submit Report
+                  <Send size={14} />
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+    </AppShell>
+  );
+}
