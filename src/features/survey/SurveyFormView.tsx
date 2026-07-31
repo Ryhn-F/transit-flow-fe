@@ -37,12 +37,12 @@ export function SurveyFormView() {
   const [coordinates, setCoordinatesState] = useState(
     draft.coordinates ?? { lat: -6.2023, lng: 106.8228 },
   );
-  const [observationType, setObservationTypeState] = useState<
-    ObservationType | undefined
-  >(draft.observationType);
-  const [congestionLevel, setCongestionLevelState] = useState<
-    CongestionLevel | undefined
-  >(draft.congestionLevel);
+  const [observationType, setObservationTypeState] = useState<ObservationType>(
+    draft.observationType,
+  );
+  const [congestionLevel, setCongestionLevelState] = useState<CongestionLevel>(
+    draft.congestionLevel,
+  );
   const [obstructionImpact, setObstructionImpactState] = useState<number>(
     draft.obstructionImpactPercent ?? 65,
   );
