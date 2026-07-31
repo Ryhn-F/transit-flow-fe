@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import { Map as MapLibreMap, Marker } from "maplibre-gl";
 import { AppShell } from "@/components/shared/app-shell";
 import { MapCanvas } from "@/components/shared/map-canvas";
@@ -21,6 +21,8 @@ const STATUS_COLORS: Record<string, string> = {
 export function DashboardView() {
   const mapRef = useRef<MapLibreMap | null>(null);
   const markersRef = useRef<Marker[]>([]);
+  // mapReady is a state flag so effects re-run when the map becomes available
+  const [mapReady, setMapReady] = useState(false);
   const { data: stationsData } = useStationsQuery();
   const selectedStation = useSelectedStation();
   const { selectStation, flyToTarget, clearFlyTo } = useStationUIStore();
@@ -35,7 +37,6 @@ export function DashboardView() {
     });
     clearFlyTo();
   }, [flyToTarget, clearFlyTo]);
-
 
   const clearMarkers = () => {
     markersRef.current.forEach((m) => m.remove());
@@ -75,7 +76,6 @@ export function DashboardView() {
         el.onmouseover = () => (dot.style.transform = "scale(1.4)");
         el.onmouseout = () => (dot.style.transform = "scale(1)");
 
-
         const marker = new Marker({ element: el })
           .setLngLat([lng, lat])
           .addTo(map);
@@ -91,20 +91,21 @@ export function DashboardView() {
     [stationsData, selectStation],
   );
 
-  // Re-render markers when stations data changes
+  // Render markers whenever EITHER the map becomes ready OR data arrives.
+  // Using mapReady state (not just mapRef) ensures this effect re-fires when
+  // the map finishes loading — avoiding the stale-closure race where the
+  // map.on('load') callback captured a renderMarkers with no data yet.
   useEffect(() => {
-    if (mapRef.current && stationsData) {
-      renderMarkers(mapRef.current);
-    }
-  }, [stationsData, renderMarkers]);
+    if (!mapReady || !mapRef.current || !stationsData) return;
+    renderMarkers(mapRef.current);
+  }, [mapReady, stationsData, renderMarkers]);
 
-  const handleMapReady = useCallback(
-    (map: MapLibreMap) => {
-      mapRef.current = map;
-      renderMarkers(map);
-    },
-    [renderMarkers],
-  );
+  // Stable callback — no dependency on renderMarkers so MapCanvas's frozen
+  // closure always calls the correct function regardless of load order.
+  const handleMapReady = useCallback((map: MapLibreMap) => {
+    mapRef.current = map;
+    setMapReady(true);
+  }, []);
 
   return (
     <AppShell>
