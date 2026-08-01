@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   ClipboardList,
+  Sparkles,
   Settings,
   ChevronLeft,
   ChevronRight,
@@ -17,6 +18,7 @@ import Image from "next/image";
 const navItems = [
   { label: "DASHBOARD", href: "/dashboard", icon: LayoutDashboard },
   { label: "FIELD SURVEY", href: "/survey", icon: ClipboardList },
+  { label: "AI INGESTION", href: "/ai-ingestion", icon: Sparkles },
 ];
 
 export function Sidebar() {
@@ -80,7 +82,14 @@ export function Sidebar() {
                   : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/[0.05] hover:text-slate-900 dark:hover:text-white border border-transparent",
               )}
             >
-              <Icon size={16} className={cn("shrink-0 transition-transform duration-200 group-hover:scale-110", isActive && "text-white")} />
+              <Icon
+                size={16}
+                className={cn(
+                  "shrink-0 transition-transform duration-200 group-hover:scale-110",
+                  item.icon === Sparkles && "animate-pulse",
+                  isActive && "text-white",
+                )}
+              />
               {!isCollapsed && <span>{item.label}</span>}
               {isActive && !isCollapsed && (
                 <span className="absolute right-2.5 w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
