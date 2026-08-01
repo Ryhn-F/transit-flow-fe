@@ -53,6 +53,33 @@ Each PRD follows the same structure:
 6. **Demo script** — a rehearsed walkthrough with acceptance criteria
 7. **Dependencies** — mock foundation and shared components required
 
+## PRD Quality Rubric (10/10 Standard)
+
+Every PRD is reviewed against **10 dimensions** and must score **≥9 on each** (average 10)
+before it is considered done. Dimension scores are reported as `D1..D10` in the review
+summary.
+
+| # | Dimension | 10/10 Means |
+| --- | --- | --- |
+| D1 | **Purpose & Problem** | States the user problem, why the mock exists now, and the stakeholder value; links to the sprint doc; defines the demo narrative |
+| D2 | **Personas & Roles** | Names the user persona(s) (operator, commuter, warden, Kemenhub, developer...) and what each can/cannot do in the mock |
+| D3 | **Information Architecture & Flow** | Entry points, navigation paths, page map, and end-to-end user flows are specified; every surface has a defined home |
+| D4 | **Screen & Component Specs** | Every surface is described with layout, key components, and all states: default / empty / loading / error / edge cases |
+| D5 | **Interactions & Micro-interactions** | Click/hover/drag/keyboard behaviors, transitions, animations (with durations), feedback, and error recovery are specified |
+| D6 | **Visual Design Spec** | Consistent with the existing design system (Tailwind v4, dark/light, panel language, mono-for-data/sans-for-UI); tokens, spacing, and typography called out; DEMO badge specified |
+| D7 | **Content & Copy** | Realistic labels, empty states, toasts, and error messages quoted; id/en considered where a public surface (Sprint 11) |
+| D8 | **Mock Data Spec** | Fixture schema (typed), seed counts, realism notes, and how the dataset extends the shared fixtures |
+| D9 | **Liveness & Behavior** | Deterministic simulation rules: drivers, ticks, thresholds, timing; `prefers-reduced-motion` and tab-visibility handling specified |
+| D10 | **Tech Specs** | Implementation-level spec: components/files, hooks, repository interfaces, MapLibre layers, zustand state, live-driver events, env flags, validation, and test strategy (Vitest + Playwright) — **no new frameworks** beyond the existing stack |
+
+**Constraints for all PRDs**
+
+- Stack is fixed: Next.js 16 App Router, React 19, TypeScript strict, Tailwind CSS 4, MapLibre GL v6, Zustand, TanStack React Query, React Hook Form + Zod, Axios, Sonner, Lucide, Vitest, Playwright
+- No new runtime frameworks (no MSW, no Socket.io, no chart libs beyond Recharts-style in-house SVG unless already present — prefer in-house SVG/Canvas per repo precedent)
+- All mock behavior must be fixture-driven through the repository boundary + live driver; no hardcoded JSX data
+- Accessibility is mandatory: ARIA, keyboard operability, focus management, contrast, `prefers-reduced-motion`
+- Every PRD ends with a Demo Script with verifiable acceptance criteria
+
 ## Demo Order
 
 Sprints 2–12 compose into a single guided tour: open the Dashboard (VCI live layer),
