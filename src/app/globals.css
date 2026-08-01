@@ -75,3 +75,10 @@ input[type="range"]::-moz-range-thumb {
   width: 32px !important;
   height: 32px !important;
 }
+
+/* Hide Next.js Dev Indicator Badge during dev */
+nextjs-portal,
+[data-next-badge],
+[data-nextjs-toast-errors-parent] {
+  display: none !important;
+}
