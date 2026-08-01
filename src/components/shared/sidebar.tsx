@@ -54,7 +54,7 @@ export function Sidebar() {
               <span className="font-bold text-slate-900 dark:text-white text-sm tracking-tight">
                 TransitFlow <span className="text-blue-500 font-mono text-xs">AI</span>
               </span>
-              <span className="font-mono text-[9px] tracking-[0.2em] text-slate-400 dark:text-slate-500 uppercase">
+              <span className="text-[10px] tracking-[0.2em] text-slate-400 dark:text-slate-500 uppercase">
                 Spatial GIS Engine
               </span>
             </div>
@@ -73,7 +73,7 @@ export function Sidebar() {
               href={item.href}
               title={isCollapsed ? item.label : undefined}
               className={cn(
-                "flex items-center gap-3 py-2.5 rounded-xl text-[11px] font-semibold font-mono tracking-wider transition-all duration-150 overflow-hidden whitespace-nowrap relative group",
+                "flex items-center gap-3 py-2.5 rounded-xl text-[11px] font-semibold tracking-wider transition-all duration-150 overflow-hidden whitespace-nowrap relative group",
                 isCollapsed ? "px-0 justify-center" : "px-3.5",
                 isActive
                   ? "bg-blue-600 text-white shadow-lg shadow-blue-600/25 border border-blue-400/30"

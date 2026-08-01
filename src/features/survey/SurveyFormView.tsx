@@ -127,7 +127,7 @@ export function SurveyFormView() {
           <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-slate-100 dark:border-white/[0.06] shrink-0">
             <div>
               <h2 className="font-bold text-base text-slate-900 dark:text-white tracking-tight">New Field Survey</h2>
-              <p className="font-mono text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-0.5">Spatial Data Ingest</p>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-0.5">Spatial Data Ingest</p>
             </div>
             <Link
               href="/dashboard"
@@ -181,7 +181,7 @@ export function SurveyFormView() {
             <button
               type="button"
               onClick={saveDraft}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200/80 dark:border-white/10 text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-[#141b2b] hover:bg-slate-200 dark:hover:bg-white/[0.08] transition-all duration-150 active:scale-95"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200/80 dark:border-white/10 text-xs font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-[#141b2b] hover:bg-slate-200 dark:hover:bg-white/[0.08] transition-all duration-150 active:scale-95"
             >
               <Save size={14} />
               Save Draft
@@ -191,7 +191,7 @@ export function SurveyFormView() {
               onClick={onSubmit}
               disabled={isPending}
               className={cn(
-                "flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-mono font-bold text-white transition-all duration-150 shadow-md shadow-blue-600/25 border border-blue-400/30 active:scale-95",
+                "flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white transition-all duration-150 shadow-md shadow-blue-600/25 border border-blue-400/30 active:scale-95",
                 isPending
                   ? "bg-blue-700 cursor-wait opacity-70"
                   : "bg-blue-600 hover:bg-blue-500",
