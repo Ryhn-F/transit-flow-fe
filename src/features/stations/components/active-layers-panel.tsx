@@ -16,7 +16,7 @@ export function ActiveLayersPanel() {
 
   return (
     <div className="bg-white/95 dark:bg-[#0c1019]/95 backdrop-blur-xl border border-slate-200/80 dark:border-white/[0.08] rounded-2xl shadow-2xl p-4.5 w-76 transition-all duration-200">
-      <h3 className="font-mono text-[10px] font-bold text-slate-400 dark:text-slate-400 uppercase tracking-[0.2em] mb-3 flex items-center justify-between">
+      <h3 className="font-mono text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] mb-3 flex items-center justify-between">
         <span>Active Spatial Layers</span>
         <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-ping" />
       </h3>
@@ -31,7 +31,7 @@ export function ActiveLayersPanel() {
                 "flex items-center gap-3 px-3 py-2 rounded-xl border transition-all duration-150 cursor-pointer select-none",
                 isActive
                   ? "bg-blue-500/10 border-blue-500/30 text-slate-900 dark:text-white shadow-sm"
-                  : "bg-transparent border-transparent hover:bg-slate-100/70 dark:hover:bg-white/[0.04] text-slate-400 hover:text-slate-700 dark:hover:text-slate-200",
+                  : "bg-transparent border-transparent hover:bg-slate-100/70 dark:hover:bg-white/[0.04] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200",
               )}
             >
               <div

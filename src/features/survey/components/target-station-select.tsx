@@ -19,7 +19,7 @@ export function TargetStationSelect({
 
   return (
     <div>
-      <label className="block font-mono text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-1.5">
+      <label className="block font-mono text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] mb-1.5">
         Target Station Node
       </label>
       <div className="relative">

@@ -26,7 +26,7 @@ export function ObservationTypePicker({
 }: ObservationTypePickerProps) {
   return (
     <div>
-      <label className="block font-mono text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-2">
+      <label className="block font-mono text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] mb-2">
         Observation Type
       </label>
       <div className="grid grid-cols-2 gap-2">

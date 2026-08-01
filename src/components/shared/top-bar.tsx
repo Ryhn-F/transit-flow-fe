@@ -16,12 +16,17 @@ export function TopBar({ showSearch = true }: TopBarProps) {
   const { flyToStation } = useStationUIStore();
   const { theme, toggleTheme } = useThemeStore();
 
+  const [mounted, setMounted] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<GeoJSONFeature<StationNode>[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Debounced search — fires 350 ms after the user stops typing
   useEffect(() => {
@@ -164,14 +169,22 @@ export function TopBar({ showSearch = true }: TopBarProps) {
 
       <div className="flex-1" />
 
-      {/* Theme Toggle Button */}
-      <button
-        onClick={toggleTheme}
-        className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all duration-150 rounded-xl border border-slate-200/60 dark:border-white/10 bg-slate-100/80 dark:bg-[#141b2b] hover:border-slate-300 dark:hover:border-white/20 active:scale-95 shadow-sm"
-        title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-      >
-        {theme === "dark" ? <Sun size={15} className="text-amber-400" /> : <Moon size={15} className="text-indigo-400" />}
-      </button>
+      {/* Theme Toggle Button (mounted check prevents React SSR Hydration Mismatch) */}
+      {mounted ? (
+        <button
+          onClick={toggleTheme}
+          className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all duration-150 rounded-xl border border-slate-200/60 dark:border-white/10 bg-slate-100/80 dark:bg-[#141b2b] hover:border-slate-300 dark:hover:border-white/20 active:scale-95 shadow-sm"
+          title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+        >
+          {theme === "dark" ? (
+            <Sun size={15} className="text-amber-400" />
+          ) : (
+            <Moon size={15} className="text-indigo-400" />
+          )}
+        </button>
+      ) : (
+        <div className="w-8 h-8 rounded-xl border border-slate-200/60 dark:border-white/10 bg-slate-100/80 dark:bg-[#141b2b]" />
+      )}
 
       {/* Notification bell */}
       <button className="relative p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all duration-150 rounded-xl border border-slate-200/60 dark:border-white/10 bg-slate-100/80 dark:bg-[#141b2b] active:scale-95 shadow-sm">

@@ -103,6 +103,17 @@ export function MapCanvas({ onMapReady, className = "" }: MapCanvasProps) {
 
       mapRef.current = map;
 
+      // Fallback handler for missing tile sprite images (e.g., "wood-pattern")
+      map.on("styleimagemissing", (e) => {
+        if (!map.hasImage(e.id)) {
+          map.addImage(e.id, {
+            width: 1,
+            height: 1,
+            data: new Uint8Array(4),
+          });
+        }
+      });
+
       map.addControl(new NavigationControl(), "top-right");
 
       map.on("load", () => {

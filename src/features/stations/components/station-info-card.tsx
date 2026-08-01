@@ -31,7 +31,7 @@ export function StationInfoCard({ station }: StationInfoCardProps) {
           </h2>
           <div className="flex items-center gap-1.5 mt-1">
             <MapPin size={11} className="text-blue-500 shrink-0" />
-            <span className="font-mono text-[10px] text-slate-400 dark:text-slate-400 tracking-wider">
+            <span className="font-mono text-[10px] text-slate-500 dark:text-slate-400 tracking-wider">
               LAT: -6.2088 | LNG: 106.8272
             </span>
           </div>
@@ -57,16 +57,16 @@ export function StationInfoCard({ station }: StationInfoCardProps) {
       {/* Metrics Grid */}
       <div className="grid grid-cols-2 gap-2.5 mt-3">
         <div className="bg-slate-50 dark:bg-[#141b2b]/90 border border-slate-100 dark:border-white/[0.06] rounded-xl p-3">
-          <div className="font-mono text-[9px] text-slate-400 uppercase tracking-[0.15em] mb-1">
+          <div className="font-mono text-[9px] text-slate-500 dark:text-slate-400 uppercase tracking-[0.15em] mb-1">
             VCI Score
           </div>
           <div className="text-2xl font-mono font-black text-rose-500 tracking-tight">
             {MOCK_VCI.score}
-            <span className="text-xs font-normal text-slate-400 ml-0.5">/100</span>
+            <span className="text-xs font-normal text-slate-500 dark:text-slate-400 ml-0.5">/100</span>
           </div>
         </div>
         <div className="bg-slate-50 dark:bg-[#141b2b]/90 border border-slate-100 dark:border-white/[0.06] rounded-xl p-3">
-          <div className="font-mono text-[9px] text-slate-400 uppercase tracking-[0.15em] mb-1">
+          <div className="font-mono text-[9px] text-slate-500 dark:text-slate-400 uppercase tracking-[0.15em] mb-1">
             Pedestrians
           </div>
           <div className="flex items-center justify-between">
@@ -81,7 +81,7 @@ export function StationInfoCard({ station }: StationInfoCardProps) {
       {/* Status row */}
       <div className="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100 dark:border-white/[0.06]">
         <AlertTriangle size={13} className="text-amber-400 shrink-0" />
-        <span className="font-mono text-[10px] text-slate-400 dark:text-slate-400 tracking-wide">
+        <span className="font-mono text-[10px] text-slate-500 dark:text-slate-400 tracking-wide">
           {station.active_exit_count} Active Exits · {station.operator}
         </span>
       </div>

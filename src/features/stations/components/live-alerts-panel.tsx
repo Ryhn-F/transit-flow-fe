@@ -39,7 +39,7 @@ export function LiveAlertsPanel() {
     <div className="bg-white/95 dark:bg-[#0c1019]/95 backdrop-blur-xl border border-slate-200/80 dark:border-white/[0.08] rounded-2xl shadow-2xl p-4.5 w-76 transition-all duration-200">
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
-        <h3 className="font-mono text-[10px] font-bold text-slate-400 dark:text-slate-400 uppercase tracking-[0.2em]">
+        <h3 className="font-mono text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em]">
           Live Risk Stream
         </h3>
         {newCount > 0 && (
@@ -82,10 +82,10 @@ export function LiveAlertsPanel() {
                 <div className="text-xs font-bold text-slate-900 dark:text-slate-100 leading-tight">
                   {alert.title}
                 </div>
-                <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
+                <div className="text-[11px] text-slate-600 dark:text-slate-400 mt-0.5 leading-snug">
                   {alert.description}
                 </div>
-                <div className="font-mono text-[9px] text-slate-400 dark:text-slate-400 mt-1">
+                <div className="font-mono text-[9px] text-slate-500 dark:text-slate-400 mt-1">
                   {alert.relativeTime}
                 </div>
               </div>

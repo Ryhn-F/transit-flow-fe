@@ -31,7 +31,7 @@ export const MapDrawControl: React.FC<MapDrawControlProps> = ({
         }`}
         title="Toggle between 2D Flat & 3D Perspective Mode"
       >
-        {is3DMode ? <Box className="w-3.5 h-3.5 text-indigo-400" /> : <Layers className="w-3.5 h-3.5 text-slate-400" />}
+        {is3DMode ? <Box className="w-3.5 h-3.5 text-indigo-400" /> : <Layers className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />}
         <span>{is3DMode ? "3D Mode" : "2D Flat"}</span>
       </button>
 
@@ -47,7 +47,7 @@ export const MapDrawControl: React.FC<MapDrawControlProps> = ({
         {isEditing ? (
           <Pencil className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
         ) : (
-          <MousePointer className="w-3.5 h-3.5 text-slate-400" />
+          <MousePointer className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
         )}
         <span>{isEditing ? "Editor Active" : "View Mode"}</span>
       </button>

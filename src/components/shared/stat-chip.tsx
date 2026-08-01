@@ -27,7 +27,7 @@ export function StatChip({
         <Icon size={16} className="text-blue-500" />
       </div>
       <div>
-        <div className="font-mono text-[9px] uppercase tracking-[0.15em] text-slate-400 dark:text-slate-400 font-semibold">{label}</div>
+        <div className="font-mono text-[9px] uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400 font-semibold">{label}</div>
         <div className="flex items-baseline gap-2">
           <span className="text-sm font-mono font-bold text-slate-900 dark:text-white tracking-tight">{value}</span>
           {subLabel && (
