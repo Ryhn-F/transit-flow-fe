@@ -9,6 +9,7 @@ import {
 import "maplibre-gl/dist/maplibre-gl.css";
 import { env } from "@/lib/env";
 import { useThemeStore } from "@/lib/theme-store";
+import { useStationUIStore } from "@/features/stations/store/station-ui-store";
 
 // maplibre-gl v6 ships only .mjs worker files. Next.js/Turbopack serves files
 // from node_modules with a text/plain Content-Type, which browsers reject for
@@ -29,6 +30,7 @@ export function MapCanvas({ onMapReady, className = "" }: MapCanvasProps) {
   const [mapError, setMapError] = useState<string | null>(null);
 
   const theme = useThemeStore((s) => s.theme);
+  const is3DMode = useStationUIStore((s) => s.is3DMode);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -47,6 +49,10 @@ export function MapCanvas({ onMapReady, className = "" }: MapCanvasProps) {
           env.NEXT_PUBLIC_DEFAULT_MAP_CENTER_LAT,
         ],
         zoom: env.NEXT_PUBLIC_DEFAULT_MAP_ZOOM,
+        pitch: 0,
+        bearing: 0,
+        dragRotate: false,
+        touchPitch: false,
       });
 
       mapRef.current = map;
@@ -81,6 +87,15 @@ export function MapCanvas({ onMapReady, className = "" }: MapCanvasProps) {
         : env.NEXT_PUBLIC_MAPLIBRE_STYLE_URL;
     mapRef.current.setStyle(styleUrl);
   }, [theme]);
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+    mapRef.current.easeTo({
+      pitch: is3DMode ? 45 : 0,
+      bearing: is3DMode ? -15 : 0,
+      duration: 800,
+    });
+  }, [is3DMode]);
 
   return (
     <div className={`relative w-full h-full ${className}`}>

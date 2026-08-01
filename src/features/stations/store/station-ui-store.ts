@@ -18,11 +18,13 @@ interface StationUIState {
   selectedStationId: string | null;
   flyToTarget: FlyToTarget | null;
   layers: LayerToggles;
+  is3DMode: boolean;
   setSearchQuery: (q: string) => void;
   selectStation: (id: string | null) => void;
   flyToStation: (target: FlyToTarget) => void;
   clearFlyTo: () => void;
   toggleLayer: (layer: keyof LayerToggles) => void;
+  toggle3DMode: () => void;
 }
 
 export const useStationUIStore = create<StationUIState>((set) => ({
@@ -35,6 +37,7 @@ export const useStationUIStore = create<StationUIState>((set) => ({
     temporaryBufferZone: false,
     aiRecommendations: false,
   },
+  is3DMode: false,
   setSearchQuery: (q) => set({ searchQuery: q }),
   selectStation: (id) => set({ selectedStationId: id }),
   flyToStation: (target) =>
@@ -44,4 +47,5 @@ export const useStationUIStore = create<StationUIState>((set) => ({
     set((state) => ({
       layers: { ...state.layers, [layer]: !state.layers[layer] },
     })),
+  toggle3DMode: () => set((state) => ({ is3DMode: !state.is3DMode })),
 }));
