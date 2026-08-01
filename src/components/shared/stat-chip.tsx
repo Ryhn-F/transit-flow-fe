@@ -19,17 +19,17 @@ export function StatChip({
   return (
     <div
       className={cn(
-        "flex items-center gap-3 bg-white/95 backdrop-blur-sm rounded-xl px-4 py-2.5 shadow-md",
+        "flex items-center gap-3 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-gray-100 dark:border-slate-800 rounded-xl px-4 py-2.5 shadow-md transition-colors duration-200",
         className,
       )}
     >
-      <div className="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
-        <Icon size={18} className="text-blue-600" />
+      <div className="w-9 h-9 rounded-full bg-blue-50 dark:bg-blue-950/60 flex items-center justify-center shrink-0">
+        <Icon size={18} className="text-blue-600 dark:text-blue-400" />
       </div>
       <div>
-        <div className="text-xs text-gray-500 font-medium">{label}</div>
+        <div className="text-xs text-gray-500 dark:text-gray-400 font-medium">{label}</div>
         <div className="flex items-baseline gap-1.5">
-          <span className="text-base font-bold text-gray-900">{value}</span>
+          <span className="text-base font-bold text-gray-900 dark:text-white">{value}</span>
           {subLabel && (
             <span className="text-xs text-orange-500 font-medium">
               {subLabel}

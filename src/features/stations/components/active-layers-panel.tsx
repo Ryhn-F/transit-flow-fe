@@ -15,8 +15,8 @@ export function ActiveLayersPanel() {
   const { layers, toggleLayer } = useStationUIStore();
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-4 w-72">
-      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">
+    <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-gray-100 dark:border-slate-800 rounded-xl shadow-xl p-4 w-72 transition-colors duration-200">
+      <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
         Active Layers
       </h3>
       <div className="space-y-2.5">
@@ -33,7 +33,7 @@ export function ActiveLayersPanel() {
                   "w-4.5 h-4.5 rounded border-2 flex items-center justify-center shrink-0 transition-colors cursor-pointer",
                   isActive
                     ? "bg-blue-600 border-blue-600"
-                    : "border-gray-300 hover:border-blue-400",
+                    : "border-gray-300 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500",
                 )}
               >
                 {isActive && (
@@ -56,7 +56,7 @@ export function ActiveLayersPanel() {
               <span
                 className={cn(
                   "text-sm flex-1 transition-colors",
-                  isActive ? "text-gray-900" : "text-gray-400",
+                  isActive ? "text-gray-900 dark:text-white" : "text-gray-400 dark:text-gray-500",
                 )}
               >
                 {label}
@@ -65,7 +65,7 @@ export function ActiveLayersPanel() {
                 size={15}
                 className={cn(
                   "transition-colors",
-                  isActive ? "text-blue-600" : "text-gray-300",
+                  isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-300 dark:text-gray-600",
                 )}
               />
             </label>

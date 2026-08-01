@@ -36,14 +36,14 @@ export function LiveAlertsPanel() {
   const newCount = MOCK_ALERTS.length;
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-4 w-72">
+    <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-gray-100 dark:border-slate-800 rounded-xl shadow-xl p-4 w-72 transition-colors duration-200">
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+        <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
           Live Alerts
         </h3>
         {newCount > 0 && (
-          <span className="px-2 py-0.5 bg-red-100 text-red-600 text-[10px] font-bold rounded-full">
+          <span className="px-2 py-0.5 bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 text-[10px] font-bold rounded-full">
             {newCount} NEW
           </span>
         )}
@@ -66,8 +66,8 @@ export function LiveAlertsPanel() {
                 className={cn(
                   "w-7 h-7 rounded-md flex items-center justify-center shrink-0 mt-0.5",
                   alert.type === "CRITICAL"
-                    ? "bg-red-100"
-                    : "bg-orange-100",
+                    ? "bg-red-100 dark:bg-red-950/60"
+                    : "bg-orange-100 dark:bg-orange-950/60",
                 )}
               >
                 {alert.icon === "danger" ? (
@@ -88,13 +88,13 @@ export function LiveAlertsPanel() {
               </div>
               {/* Text */}
               <div className="flex-1 min-w-0">
-                <div className="text-sm font-semibold text-gray-900 leading-tight">
+                <div className="text-sm font-semibold text-gray-900 dark:text-white leading-tight">
                   {alert.title}
                 </div>
-                <div className="text-xs text-gray-500 mt-0.5 leading-snug">
+                <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-snug">
                   {alert.description}
                 </div>
-                <div className="text-[10px] text-gray-400 mt-1">
+                <div className="text-[10px] text-gray-400 dark:text-gray-500 mt-1">
                   {alert.relativeTime}
                 </div>
               </div>

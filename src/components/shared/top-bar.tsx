@@ -77,9 +77,9 @@ export function TopBar({ showSearch = true }: TopBarProps) {
   }
 
   return (
-    <div className="flex items-center gap-3 px-4 py-3 bg-white border-b border-gray-200 shrink-0">
+    <div className="flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 shrink-0 transition-colors duration-200">
       {/* Station scope dropdown */}
-      <button className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors">
+      <button className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 dark:bg-slate-800 rounded-full text-sm font-medium text-gray-700 dark:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
         <span>Dukuh Atas</span>
         <ChevronDown size={14} />
       </button>
@@ -96,7 +96,7 @@ export function TopBar({ showSearch = true }: TopBarProps) {
           ) : (
             <Search
               size={15}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"
             />
           )}
 
@@ -106,18 +106,18 @@ export function TopBar({ showSearch = true }: TopBarProps) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => results.length > 0 && setIsOpen(true)}
-            className="w-full pl-9 pr-4 py-1.5 bg-gray-100 rounded-full text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
+            className="w-full pl-9 pr-4 py-1.5 bg-gray-100 dark:bg-slate-800 rounded-full text-sm text-gray-700 dark:text-slate-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
           />
 
-          {/* Dropdown results */}
+          {/* Search results dropdown */}
           {isOpen && (
-            <div className="absolute top-full left-0 mt-1.5 w-full bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50">
+            <div className="absolute top-full left-0 right-0 mt-1.5 bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-xl shadow-xl z-50 overflow-hidden">
               {results.length === 0 ? (
-                <p className="px-4 py-3 text-sm text-gray-400 text-center">
+                <div className="px-4 py-3 text-xs text-gray-400 dark:text-gray-500 text-center">
                   No stations found
-                </p>
+                </div>
               ) : (
-                <ul>
+                <ul className="max-h-60 overflow-y-auto divide-y divide-gray-50 dark:divide-slate-800/50">
                   {results.map((feature) => {
                     const s = feature.properties;
                     return (
@@ -125,17 +125,17 @@ export function TopBar({ showSearch = true }: TopBarProps) {
                         <button
                           type="button"
                           onClick={() => handleSelect(feature)}
-                          className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-blue-50 transition-colors text-left group"
+                          className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-blue-50 dark:hover:bg-slate-800/70 text-left transition-colors group"
                         >
                           <MapPin
                             size={14}
                             className="text-blue-500 shrink-0 group-hover:text-blue-600"
                           />
                           <div className="min-w-0">
-                            <p className="text-sm font-medium text-gray-800 truncate">
+                            <p className="text-sm font-medium text-gray-800 dark:text-slate-100 truncate">
                               {s.station_name}
                             </p>
-                            <p className="text-xs text-gray-400 truncate">
+                            <p className="text-xs text-gray-400 dark:text-gray-500 truncate">
                               {s.operator} ·{" "}
                               <span
                                 className={
@@ -166,14 +166,14 @@ export function TopBar({ showSearch = true }: TopBarProps) {
       {/* Theme Toggle Button */}
       <button
         onClick={toggleTheme}
-        className="p-2 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-white/10"
+        className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800"
         title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
       >
         {theme === "dark" ? <Sun size={18} className="text-amber-400" /> : <Moon size={18} className="text-indigo-400" />}
       </button>
 
       {/* Notification bell */}
-      <button className="relative p-2 text-gray-400 hover:text-white transition-colors">
+      <button className="relative p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
         <Bell size={18} />
         <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
       </button>
