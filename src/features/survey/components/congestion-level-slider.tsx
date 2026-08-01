@@ -1,13 +1,12 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import type { CongestionLevel } from "@/entities/survey";
 
 const LEVELS: { value: CongestionLevel; label: string; color: string }[] = [
-  { value: "LOW", label: "Low", color: "#22c55e" },
+  { value: "LOW", label: "Low", color: "#10b981" },
   { value: "MEDIUM", label: "Med", color: "#f59e0b" },
   { value: "HIGH", label: "High", color: "#f97316" },
-  { value: "CRITICAL", label: "Crit", color: "#ef4444" },
+  { value: "CRITICAL", label: "Crit", color: "#f43f5e" },
 ];
 
 const LEVEL_INDEX: Record<CongestionLevel, number> = {
@@ -32,12 +31,12 @@ export function CongestionLevelSlider({
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
-        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+        <label className="font-mono text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">
           Congestion Level
         </label>
         {currentLevel && (
           <span
-            className="text-sm font-bold"
+            className="font-mono text-xs font-bold tracking-wider uppercase"
             style={{ color: currentLevel.color }}
           >
             {currentLevel.label}
@@ -57,8 +56,8 @@ export function CongestionLevelSlider({
           className="w-full h-2 rounded-full appearance-none cursor-pointer"
           style={{
             background: currentLevel
-              ? `linear-gradient(to right, ${currentLevel.color} 0%, ${currentLevel.color} ${(currentIdx / 3) * 100}%, #3d4d61 ${(currentIdx / 3) * 100}%, #3d4d61 100%)`
-              : "#3d4d61",
+              ? `linear-gradient(to right, ${currentLevel.color} 0%, ${currentLevel.color} ${(currentIdx / 3) * 100}%, rgba(255,255,255,0.1) ${(currentIdx / 3) * 100}%, rgba(255,255,255,0.1) 100%)`
+              : "rgba(255,255,255,0.1)",
           }}
         />
       </div>
@@ -66,7 +65,7 @@ export function CongestionLevelSlider({
       {/* Labels */}
       <div className="flex justify-between">
         {LEVELS.map(({ label }) => (
-          <span key={label} className="text-[10px] text-gray-500">
+          <span key={label} className="font-mono text-[10px] text-slate-400 dark:text-slate-500">
             {label}
           </span>
         ))}

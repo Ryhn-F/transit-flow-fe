@@ -25,27 +25,27 @@ export function CoordinatesInput({ value, onChange }: CoordinatesInputProps) {
 
   return (
     <div>
-      <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">
-        Survey Coordinates
+      <label className="block font-mono text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-1.5">
+        Survey Spatial Coordinates
       </label>
       <div className="relative">
         <input
           type="text"
           readOnly
           value={`${value.lat.toFixed(4)},  ${value.lng.toFixed(4)}`}
-          className="w-full bg-[#2d3748] text-white text-sm rounded-lg px-3 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500/50 cursor-default"
+          className="w-full bg-slate-100 dark:bg-[#141b2b] text-slate-900 dark:text-slate-100 font-mono text-xs rounded-xl px-3.5 py-2.5 pr-10 border border-slate-200/80 dark:border-white/10 focus:outline-none cursor-default shadow-inner"
         />
         <button
           type="button"
           onClick={useMyLocation}
           disabled={loading}
-          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-blue-400 hover:text-blue-300 transition-colors disabled:opacity-50"
-          title="Use my location"
+          className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1.5 text-blue-500 hover:text-blue-400 transition-colors disabled:opacity-50 rounded-lg hover:bg-blue-500/10"
+          title="Acquire current GPS location"
         >
           {loading ? (
-            <div className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
+            <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
           ) : (
-            <MapPin size={16} />
+            <MapPin size={15} />
           )}
         </button>
       </div>

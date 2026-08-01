@@ -65,40 +65,39 @@ export function AudioNoteRecorder({ onRecorded }: AudioNoteRecorderProps) {
     return `${min}:${sec}`;
   };
 
-  // Waveform bars (mock animated bars when recording)
-  const bars = Array.from({ length: 10 }, (_, i) => i);
+  const bars = Array.from({ length: 12 }, (_, i) => i);
 
   return (
-    <div className="flex items-center gap-3 bg-[#2d3748] rounded-lg px-4 py-3">
+    <div className="flex items-center gap-3 bg-slate-100 dark:bg-[#141b2b] border border-slate-200/80 dark:border-white/10 rounded-xl px-4 py-3 shadow-inner transition-colors duration-200">
       <button
         type="button"
         onClick={isRecording ? stopRecording : startRecording}
         className={cn(
-          "w-9 h-9 rounded-full flex items-center justify-center shrink-0 transition-colors",
+          "w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-all duration-150 active:scale-95 border",
           isRecording
-            ? "bg-red-500 hover:bg-red-600"
-            : "bg-gray-600 hover:bg-gray-500",
+            ? "bg-rose-500 hover:bg-rose-600 border-rose-400/30 text-white shadow-md shadow-rose-500/25"
+            : "bg-blue-600 hover:bg-blue-500 border-blue-400/30 text-white shadow-md shadow-blue-600/25",
         )}
       >
         {isRecording ? (
-          <Square size={14} fill="white" className="text-white" />
+          <Square size={13} fill="white" />
         ) : (
-          <Mic size={16} className="text-white" />
+          <Mic size={15} />
         )}
       </button>
 
       {/* Waveform placeholder */}
-      <div className="flex items-center gap-0.5 flex-1">
+      <div className="flex items-center gap-0.5 flex-1 h-6">
         {bars.map((i) => (
           <div
             key={i}
             className={cn(
-              "w-1 rounded-full transition-all",
-              isRecording ? "bg-blue-400" : audioUrl ? "bg-blue-600" : "bg-gray-600",
+              "w-1 rounded-full transition-all duration-150",
+              isRecording ? "bg-rose-400" : audioUrl ? "bg-blue-500" : "bg-slate-300 dark:bg-slate-700",
             )}
             style={{
               height: isRecording
-                ? `${8 + Math.abs(Math.sin((Date.now() / 200 + i) * 0.8)) * 16}px`
+                ? `${8 + Math.abs(Math.sin((durationMs / 200 + i) * 0.8)) * 16}px`
                 : audioUrl
                 ? `${6 + ((i * 3) % 14)}px`
                 : "4px",
@@ -108,7 +107,7 @@ export function AudioNoteRecorder({ onRecorded }: AudioNoteRecorderProps) {
       </div>
 
       {/* Duration */}
-      <span className="text-xs text-gray-400 font-mono shrink-0">
+      <span className="text-xs text-slate-500 dark:text-slate-400 font-mono font-bold shrink-0">
         {formatTime(durationMs)}
       </span>
 

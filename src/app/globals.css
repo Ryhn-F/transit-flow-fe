@@ -1,11 +1,15 @@
 @import "tailwindcss";
 
+@variant dark (&:where(.dark, .dark *));
+
 :root {
   --font-inter: "Inter", system-ui, sans-serif;
+  --font-mono: "ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", monospace;
 }
 
 @theme inline {
   --font-sans: var(--font-inter);
+  --font-mono: var(--font-mono);
 }
 
 /* Reset for full-height layouts */
@@ -66,12 +70,37 @@ input[type="range"]::-moz-range-thumb {
 
 /* MapLibre overrides */
 .maplibregl-ctrl-group {
-  border-radius: 8px !important;
+  border-radius: 12px !important;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark .maplibregl-ctrl-group {
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 .maplibregl-ctrl-group button {
-  width: 32px !important;
-  height: 32px !important;
+  width: 34px !important;
+  height: 34px !important;
+}
+
+/* Hide Next.js Dev Indicator Badge during dev */
+nextjs-portal,
+[data-next-badge],
+[data-nextjs-toast-errors-parent] {
+  display: none !important;
+}
+
+/* Luminous Glow Effects */
+.glow-emerald {
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.35);
+}
+
+.glow-crimson {
+  box-shadow: 0 0 16px rgba(244, 63, 94, 0.35);
+}
+
+.glow-amber {
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.35);
 }

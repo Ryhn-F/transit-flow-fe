@@ -15,25 +15,31 @@ export function ActiveLayersPanel() {
   const { layers, toggleLayer } = useStationUIStore();
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-4 w-72">
-      <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">
-        Active Layers
+    <div className="bg-white/95 dark:bg-[#0c1019]/95 backdrop-blur-xl border border-slate-200/80 dark:border-white/[0.08] rounded-2xl shadow-2xl p-4.5 w-76 transition-all duration-200">
+      <h3 className="font-mono text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] mb-3 flex items-center justify-between">
+        <span>Active Spatial Layers</span>
+        <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-ping" />
       </h3>
-      <div className="space-y-2.5">
+      <div className="space-y-2">
         {LAYERS.map(({ key, label, icon: Icon }) => {
           const isActive = layers[key];
           return (
-            <label
+            <div
               key={key}
-              className="flex items-center gap-3 cursor-pointer group"
+              onClick={() => toggleLayer(key)}
+              className={cn(
+                "flex items-center gap-3 px-3 py-2 rounded-xl border transition-all duration-150 cursor-pointer select-none",
+                isActive
+                  ? "bg-blue-500/10 border-blue-500/30 text-slate-900 dark:text-white shadow-sm"
+                  : "bg-transparent border-transparent hover:bg-slate-100/70 dark:hover:bg-white/[0.04] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200",
+              )}
             >
               <div
-                onClick={() => toggleLayer(key)}
                 className={cn(
-                  "w-4.5 h-4.5 rounded border-2 flex items-center justify-center shrink-0 transition-colors cursor-pointer",
+                  "w-4 h-4 rounded-md border flex items-center justify-center shrink-0 transition-all",
                   isActive
-                    ? "bg-blue-600 border-blue-600"
-                    : "border-gray-300 hover:border-blue-400",
+                    ? "bg-blue-600 border-blue-500 text-white shadow-md shadow-blue-500/20"
+                    : "border-slate-300 dark:border-white/20 bg-transparent",
                 )}
               >
                 {isActive && (
@@ -53,22 +59,17 @@ export function ActiveLayersPanel() {
                   </svg>
                 )}
               </div>
-              <span
-                className={cn(
-                  "text-sm flex-1 transition-colors",
-                  isActive ? "text-gray-900" : "text-gray-400",
-                )}
-              >
+              <span className="text-xs font-semibold flex-1 tracking-tight">
                 {label}
               </span>
               <Icon
-                size={15}
+                size={14}
                 className={cn(
                   "transition-colors",
-                  isActive ? "text-blue-600" : "text-gray-300",
+                  isActive ? "text-blue-500" : "text-slate-400 dark:text-slate-500",
                 )}
               />
-            </label>
+            </div>
           );
         })}
       </div>

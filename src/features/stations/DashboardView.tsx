@@ -4,6 +4,7 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import { Map as MapLibreMap, Marker } from "maplibre-gl";
 import { AppShell } from "@/components/shared/app-shell";
 import { MapCanvas } from "@/components/shared/map-canvas";
+import { MapDrawControl } from "@/components/shared/MapDrawControl";
 import { StationInfoCard } from "./components/station-info-card";
 import { ActiveLayersPanel } from "./components/active-layers-panel";
 import { LiveAlertsPanel } from "./components/live-alerts-panel";
@@ -11,6 +12,7 @@ import { StatsFooter } from "./components/stats-footer";
 import { useStationsQuery } from "./hooks/use-stations-query";
 import { useSelectedStation } from "./hooks/use-selected-station";
 import { useStationUIStore } from "./store/station-ui-store";
+import { toast } from "sonner";
 
 const STATUS_COLORS: Record<string, string> = {
   OPERATIONAL: "#22c55e",
@@ -21,13 +23,12 @@ const STATUS_COLORS: Record<string, string> = {
 export function DashboardView() {
   const mapRef = useRef<MapLibreMap | null>(null);
   const markersRef = useRef<Marker[]>([]);
-  // mapReady is a state flag so effects re-run when the map becomes available
   const [mapReady, setMapReady] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const { data: stationsData } = useStationsQuery();
   const selectedStation = useSelectedStation();
   const { selectStation, flyToTarget, clearFlyTo } = useStationUIStore();
 
-  // Fly to station when selected from search bar
   useEffect(() => {
     if (!flyToTarget || !mapRef.current) return;
     mapRef.current.flyTo({
@@ -91,21 +92,44 @@ export function DashboardView() {
     [stationsData, selectStation],
   );
 
-  // Render markers whenever EITHER the map becomes ready OR data arrives.
-  // Using mapReady state (not just mapRef) ensures this effect re-fires when
-  // the map finishes loading — avoiding the stale-closure race where the
-  // map.on('load') callback captured a renderMarkers with no data yet.
   useEffect(() => {
     if (!mapReady || !mapRef.current || !stationsData) return;
     renderMarkers(mapRef.current);
   }, [mapReady, stationsData, renderMarkers]);
 
-  // Stable callback — no dependency on renderMarkers so MapCanvas's frozen
-  // closure always calls the correct function regardless of load order.
   const handleMapReady = useCallback((map: MapLibreMap) => {
     mapRef.current = map;
     setMapReady(true);
   }, []);
+
+  const handleExportGeoJSON = () => {
+    if (!stationsData) {
+      toast.error("No spatial data available to export");
+      return;
+    }
+    const blob = new Blob([JSON.stringify(stationsData, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "station-spatial-nodes.geojson";
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success("Exported spatial GeoJSON file!");
+  };
+
+  const handleToggleEdit = () => {
+    setIsEditing((prev) => {
+      const next = !prev;
+      if (next) {
+        toast.info("Spatial Editor Active: Map feature drawing enabled");
+      } else {
+        toast.info("Spatial Editor Inactive: Returned to View Mode");
+      }
+      return next;
+    });
+  };
 
   return (
     <AppShell>
@@ -113,6 +137,14 @@ export function DashboardView() {
       <div className="absolute inset-0">
         <MapCanvas onMapReady={handleMapReady} />
       </div>
+
+      {/* Spatial Draw & Layer Controls */}
+      <MapDrawControl
+        isEditing={isEditing}
+        onToggleEdit={handleToggleEdit}
+        onExportGeoJSON={handleExportGeoJSON}
+        featuresCount={stationsData?.features?.length || 0}
+      />
 
       {/* Overlay column — top-left floating panels */}
       <div className="absolute top-4 left-4 flex flex-col gap-3 z-10 pointer-events-none">
