@@ -111,6 +111,17 @@ CREATE INDEX IF NOT EXISTS idx_survey_submissions_geom ON survey_submissions USI
 
 ---
 
+## Addendum: Dark Mode & Dynamic Vector Map Styling
+
+### Requirements
+1. **UI Theme Switcher**: Toggle between `dark` and `light` mode across all WebGIS overlays, navigation bars, and modals using a persistent theme store.
+2. **Dynamic Vector Map Tile Switching**:
+   - **Light Map Style**: `https://tiles.openfreemap.org/styles/liberty`
+   - **Dark Map Style**: `https://tiles.openfreemap.org/styles/dark`
+   - Synchronizes MapLibre vector style with the active UI theme via `map.setStyle()`.
+
+---
+
 ## Step-by-Step Implementation Procedure
 
 1. **Database Provisioning**: Create `docs/migrations/01_sprint1_schema.sql` for PostGIS spatial tables & indices.
@@ -119,4 +130,5 @@ CREATE INDEX IF NOT EXISTS idx_survey_submissions_geom ON survey_submissions USI
 4. **Client Repository**: Update `surveyRepository.submit()` in `survey-repository.ts` to call `/api/surveys`.
 5. **Spatial Editor Control**: Add `MapDrawControl` to MapLibre view in `DashboardView.tsx`.
 6. **GeoJSON Exporter**: Add client-side export utility to download validated spatial layers as standard `.geojson` files.
-7. **End-to-End Testing**: Execute unit/integration tests with Vitest and verify field survey submission flows.
+7. **Dark Mode Addendum**: Implement theme store (`useThemeStore`), TopBar toggle button, and dynamic MapLibre style updates (`map.setStyle()`).
+8. **End-to-End Testing**: Execute unit/integration tests with Vitest and verify field survey submission flows.

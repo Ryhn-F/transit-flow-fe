@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Search, Bell, ChevronDown, MapPin, Loader2 } from "lucide-react";
+import { Search, Bell, MapPin, Loader2, Sun, Moon, ChevronDown } from "lucide-react";
 import { useStationUIStore } from "@/features/stations/store/station-ui-store";
 import { stationRepository } from "@/infrastructure/repositories/station-repository";
+import { useThemeStore } from "@/lib/theme-store";
 import type { StationNode } from "@/entities/station";
 import type { GeoJSONFeature } from "@/entities/geojson";
 
@@ -13,6 +14,7 @@ interface TopBarProps {
 
 export function TopBar({ showSearch = true }: TopBarProps) {
   const { flyToStation } = useStationUIStore();
+  const { theme, toggleTheme } = useThemeStore();
 
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<GeoJSONFeature<StationNode>[]>([]);
@@ -161,8 +163,17 @@ export function TopBar({ showSearch = true }: TopBarProps) {
 
       <div className="flex-1" />
 
+      {/* Theme Toggle Button */}
+      <button
+        onClick={toggleTheme}
+        className="p-2 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-white/10"
+        title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+      >
+        {theme === "dark" ? <Sun size={18} className="text-amber-400" /> : <Moon size={18} className="text-indigo-400" />}
+      </button>
+
       {/* Notification bell */}
-      <button className="relative p-2 text-gray-500 hover:text-gray-700 transition-colors">
+      <button className="relative p-2 text-gray-400 hover:text-white transition-colors">
         <Bell size={18} />
         <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
       </button>

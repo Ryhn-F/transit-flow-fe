@@ -8,6 +8,7 @@ import {
 } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { env } from "@/lib/env";
+import { useThemeStore } from "@/lib/theme-store";
 
 // maplibre-gl v6 ships only .mjs worker files. Next.js/Turbopack serves files
 // from node_modules with a text/plain Content-Type, which browsers reject for
@@ -27,13 +28,20 @@ export function MapCanvas({ onMapReady, className = "" }: MapCanvasProps) {
   const mapRef = useRef<MapLibreMap | null>(null);
   const [mapError, setMapError] = useState<string | null>(null);
 
+  const theme = useThemeStore((s) => s.theme);
+
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
+
+    const initialStyle =
+      theme === "dark"
+        ? env.NEXT_PUBLIC_MAPLIBRE_DARK_STYLE_URL
+        : env.NEXT_PUBLIC_MAPLIBRE_STYLE_URL;
 
     try {
       const map = new MapLibreMap({
         container: containerRef.current,
-        style: env.NEXT_PUBLIC_MAPLIBRE_STYLE_URL,
+        style: initialStyle,
         center: [
           env.NEXT_PUBLIC_DEFAULT_MAP_CENTER_LNG,
           env.NEXT_PUBLIC_DEFAULT_MAP_CENTER_LAT,
@@ -64,6 +72,15 @@ export function MapCanvas({ onMapReady, className = "" }: MapCanvasProps) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+    const styleUrl =
+      theme === "dark"
+        ? env.NEXT_PUBLIC_MAPLIBRE_DARK_STYLE_URL
+        : env.NEXT_PUBLIC_MAPLIBRE_STYLE_URL;
+    mapRef.current.setStyle(styleUrl);
+  }, [theme]);
 
   return (
     <div className={`relative w-full h-full ${className}`}>
