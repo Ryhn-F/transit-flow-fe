@@ -29,8 +29,6 @@ export function SurveyFormView() {
   const draft = useSurveyDraftStore();
   const { mutate: submitSurvey, isPending } = useSubmitSurvey();
 
-  // Local state drives the UI — no react-hook-form watch() needed.
-  // setValue keeps react-hook-form in sync for validation / submit.
   const [stationId, setStationIdState] = useState<string>(
     draft.stationId ?? "",
   );
@@ -50,7 +48,6 @@ export function SurveyFormView() {
     draft.photoUrls ?? [],
   );
 
-  // Setters — update local state + rhf internal store + draft simultaneously
   function setStationId(v: string) {
     setStationIdState(v);
     setValue("stationId", v, { shouldDirty: true });
@@ -125,13 +122,16 @@ export function SurveyFormView() {
 
       {/* Modal overlay */}
       <div className="absolute inset-0 flex items-start justify-start p-4 z-10 pointer-events-none">
-        <div className="pointer-events-auto bg-[#1e2d3d] text-white rounded-2xl shadow-2xl w-[340px] max-h-[88vh] flex flex-col">
+        <div className="pointer-events-auto bg-white/95 dark:bg-[#0c1019]/95 backdrop-blur-2xl text-slate-900 dark:text-white border border-slate-200/80 dark:border-white/[0.08] rounded-2xl shadow-2xl w-[360px] max-h-[88vh] flex flex-col transition-all duration-200">
           {/* Modal header */}
-          <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-white/10 shrink-0">
-            <h2 className="font-bold text-base text-white">New Field Survey</h2>
+          <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-slate-100 dark:border-white/[0.06] shrink-0">
+            <div>
+              <h2 className="font-bold text-base text-slate-900 dark:text-white tracking-tight">New Field Survey</h2>
+              <p className="font-mono text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-0.5">Spatial Data Ingest</p>
+            </div>
             <Link
               href="/dashboard"
-              className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+              className="w-7 h-7 rounded-full bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-300 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-white/20 transition-colors"
             >
               <X size={14} />
             </Link>
@@ -152,7 +152,7 @@ export function SurveyFormView() {
               onChange={setObservationType}
             />
 
-            <div className="bg-[#253344] rounded-lg px-4 py-3 space-y-3">
+            <div className="bg-slate-100 dark:bg-[#141b2b] border border-slate-200/80 dark:border-white/10 rounded-xl px-4 py-3 space-y-3 shadow-inner">
               <CongestionLevelSlider
                 value={congestionLevel}
                 onChange={setCongestionLevel}
@@ -177,11 +177,11 @@ export function SurveyFormView() {
           </div>
 
           {/* Footer actions */}
-          <div className="px-5 py-4 border-t border-white/10 flex gap-3 shrink-0">
+          <div className="px-5 py-4 border-t border-slate-100 dark:border-white/[0.06] flex gap-3 shrink-0">
             <button
               type="button"
               onClick={saveDraft}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-white/20 text-sm font-medium text-gray-300 hover:bg-white/10 transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200/80 dark:border-white/10 text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-[#141b2b] hover:bg-slate-200 dark:hover:bg-white/[0.08] transition-all duration-150 active:scale-95"
             >
               <Save size={14} />
               Save Draft
@@ -191,10 +191,10 @@ export function SurveyFormView() {
               onClick={onSubmit}
               disabled={isPending}
               className={cn(
-                "flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-bold text-white transition-all",
+                "flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-mono font-bold text-white transition-all duration-150 shadow-md shadow-blue-600/25 border border-blue-400/30 active:scale-95",
                 isPending
                   ? "bg-blue-700 cursor-wait opacity-70"
-                  : "bg-blue-600 hover:bg-blue-700",
+                  : "bg-blue-600 hover:bg-blue-500",
               )}
             >
               {isPending ? (

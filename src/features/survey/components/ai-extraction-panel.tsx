@@ -5,14 +5,14 @@ const MOCK_SUMMARY =
 
 export function AiExtractionPanel() {
   return (
-    <div className="bg-[#1e2a3a] border border-blue-900/50 rounded-lg p-3">
+    <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-3.5 shadow-sm">
       <div className="flex items-center gap-1.5 mb-2">
-        <Sparkles size={13} className="text-blue-400" />
-        <span className="text-[10px] font-bold text-blue-400 uppercase tracking-widest">
-          AI Extraction
+        <Sparkles size={13} className="text-blue-500 animate-pulse" />
+        <span className="font-mono text-[10px] font-bold text-blue-500 uppercase tracking-[0.2em]">
+          AI Multi-Modal Extraction
         </span>
       </div>
-      <p className="text-xs text-gray-300 leading-relaxed italic">{MOCK_SUMMARY}</p>
+      <p className="font-mono text-xs text-slate-700 dark:text-slate-300 leading-relaxed italic">{MOCK_SUMMARY}</p>
     </div>
   );
 }

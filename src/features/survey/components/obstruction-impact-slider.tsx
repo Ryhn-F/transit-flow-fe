@@ -12,10 +12,10 @@ export function ObstructionImpactSlider({
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
-        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+        <label className="font-mono text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em]">
           Obstruction Impact (%)
         </label>
-        <span className="text-sm font-bold text-gray-200">{value}%</span>
+        <span className="font-mono text-xs font-bold text-slate-900 dark:text-slate-100">{value}%</span>
       </div>
       <input
         type="range"
@@ -26,7 +26,7 @@ export function ObstructionImpactSlider({
         onChange={(e) => onChange(Number(e.target.value))}
         className="w-full h-2 rounded-full appearance-none cursor-pointer"
         style={{
-          background: `linear-gradient(to right, #6366f1 0%, #6366f1 ${value}%, #3d4d61 ${value}%, #3d4d61 100%)`,
+          background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${value}%, rgba(255,255,255,0.1) ${value}%, rgba(255,255,255,0.1) 100%)`,
         }}
       />
     </div>

@@ -26,7 +26,7 @@ export function ObservationTypePicker({
 }: ObservationTypePickerProps) {
   return (
     <div>
-      <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">
+      <label className="block font-mono text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] mb-2">
         Observation Type
       </label>
       <div className="grid grid-cols-2 gap-2">
@@ -38,14 +38,14 @@ export function ObservationTypePicker({
               type="button"
               onClick={() => onChange(optVal)}
               className={cn(
-                "flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium border transition-all",
+                "flex items-center gap-2 px-3 py-2.5 rounded-xl text-xs font-semibold border transition-all duration-150 active:scale-[0.98]",
                 isActive
-                  ? "bg-blue-600 border-blue-600 text-white"
-                  : "bg-[#2d3748] border-[#3d4d61] text-gray-300 hover:border-blue-500/50",
+                  ? "bg-blue-600 border-blue-500 text-white shadow-md shadow-blue-600/25"
+                  : "bg-slate-100 dark:bg-[#141b2b] border-slate-200/80 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:border-slate-300 dark:hover:border-white/20",
               )}
             >
-              <Icon size={14} />
-              {label}
+              <Icon size={14} className={isActive ? "text-white" : "text-slate-400"} />
+              <span className="truncate">{label}</span>
             </button>
           );
         })}
