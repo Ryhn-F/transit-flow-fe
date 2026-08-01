@@ -105,7 +105,7 @@ export function Sidebar() {
                   Operator Admin
                 </div>
                 <div className="text-[10px] text-gray-400 uppercase tracking-wide">
-                  Transit Auth
+                  Transit Auth · v1.1
                 </div>
               </div>
               <button className="text-gray-400 hover:text-gray-600 transition-colors">
