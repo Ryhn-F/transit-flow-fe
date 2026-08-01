@@ -57,7 +57,7 @@ export function FieldEvidenceUploader({
           className="w-18 h-18 rounded-xl border border-dashed border-slate-300 dark:border-white/20 bg-slate-50 dark:bg-[#141b2b]/50 flex flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-400 hover:border-blue-500 hover:text-blue-500 transition-all duration-150 active:scale-95"
         >
           <Camera size={16} />
-          <span className="font-mono text-[9px] font-semibold tracking-wider uppercase">Add Photo</span>
+          <span className="text-[9px] font-semibold tracking-wider uppercase">Add Photo</span>
         </button>
         <input
           ref={inputRef}

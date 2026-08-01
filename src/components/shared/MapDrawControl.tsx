@@ -24,7 +24,7 @@ export const MapDrawControl: React.FC<MapDrawControlProps> = ({
       {/* 2D / 3D Perspective Mode Toggle */}
       <button
         onClick={toggle3DMode}
-        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium transition-all duration-150 border ${
+        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all duration-150 border ${
           is3DMode
             ? "bg-indigo-500/10 text-indigo-400 border-indigo-500/30 shadow-sm"
             : "bg-slate-100 dark:bg-[#141b2b] text-slate-700 dark:text-slate-300 border-slate-200/60 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20"
@@ -38,7 +38,7 @@ export const MapDrawControl: React.FC<MapDrawControlProps> = ({
       {/* Spatial Drawing Editor Mode Toggle */}
       <button
         onClick={onToggleEdit}
-        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium transition-all duration-150 border ${
+        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all duration-150 border ${
           isEditing
             ? "bg-amber-500/10 text-amber-400 border-amber-500/30 glow-amber"
             : "bg-slate-100 dark:bg-[#141b2b] text-slate-700 dark:text-slate-300 border-slate-200/60 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20"
@@ -55,7 +55,7 @@ export const MapDrawControl: React.FC<MapDrawControlProps> = ({
       {/* GeoJSON Exporter */}
       <button
         onClick={onExportGeoJSON}
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-medium bg-blue-600 hover:bg-blue-500 text-white transition-all duration-150 shadow-md shadow-blue-600/25 border border-blue-400/30 active:scale-95"
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white transition-all duration-150 shadow-md shadow-blue-600/25 border border-blue-400/30 active:scale-95"
         title="Export spatial layer as GeoJSON"
       >
         <Download className="w-3.5 h-3.5" />
