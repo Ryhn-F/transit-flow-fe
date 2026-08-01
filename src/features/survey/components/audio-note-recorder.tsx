@@ -98,7 +98,7 @@ export function AudioNoteRecorder({ onRecorded }: AudioNoteRecorderProps) {
             )}
             style={{
               height: isRecording
-                ? `${8 + Math.abs(Math.sin((Date.now() / 200 + i) * 0.8)) * 16}px`
+                ? `${8 + Math.abs(Math.sin((durationMs / 200 + i) * 0.8)) * 16}px`
                 : audioUrl
                 ? `${6 + ((i * 3) % 14)}px`
                 : "4px",

@@ -55,7 +55,7 @@ export function MapCanvas({ onMapReady, className = "" }: MapCanvasProps) {
       });
     } catch (err) {
       console.error(err);
-      setMapError("Map initialisation failed.");
+      setTimeout(() => setMapError("Map initialisation failed."), 0);
     }
 
     return () => {

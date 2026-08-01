@@ -27,8 +27,10 @@ export function TopBar({ showSearch = true }: TopBarProps) {
 
     const trimmed = query.trim();
     if (!trimmed) {
-      setResults([]);
-      setIsOpen(false);
+      debounceRef.current = setTimeout(() => {
+        setResults([]);
+        setIsOpen(false);
+      }, 0);
       return;
     }
 
