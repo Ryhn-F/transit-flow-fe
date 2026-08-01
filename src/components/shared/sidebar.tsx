@@ -26,39 +26,44 @@ export function Sidebar() {
   return (
     <div
       className={cn(
-        "flex flex-col h-full bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 shrink-0 transition-all duration-300 relative",
+        "flex flex-col h-full bg-white dark:bg-[#0c1019] border-r border-slate-200/80 dark:border-white/[0.08] shrink-0 transition-all duration-300 relative z-20",
         isCollapsed ? "w-16" : "w-56",
       )}
     >
       {/* Collapse Toggle */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute -right-3 top-6 w-6 h-6 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-full flex items-center justify-center text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white shadow-sm z-10"
+        className="absolute -right-3 top-6 w-6 h-6 bg-white dark:bg-[#141b2b] border border-slate-200 dark:border-white/10 rounded-full flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white shadow-md z-30 transition-transform active:scale-95"
       >
-        {isCollapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+        {isCollapsed ? <ChevronRight size={13} /> : <ChevronLeft size={13} />}
       </button>
 
       {/* Logo */}
       <div
         className={cn(
-          "flex items-center gap-2 py-5 border-b border-gray-100 dark:border-slate-800",
+          "flex items-center gap-2 py-5 border-b border-slate-100 dark:border-white/[0.06]",
           isCollapsed ? "px-2 justify-center" : "px-4",
         )}
       >
-        <div className="flex items-center gap-1 overflow-hidden whitespace-nowrap">
-          <span className="text-blue-600 font-bold text-sm tracking-wide">
-            <Image width={60} height={60} src={AppIcon.src} alt="Logo" />
+        <div className="flex items-center gap-2 overflow-hidden whitespace-nowrap">
+          <span className="text-blue-600 font-bold text-sm tracking-wide shrink-0">
+            <Image width={42} height={42} src={AppIcon.src} alt="Logo" className="rounded-xl shadow-md shadow-blue-500/10" />
           </span>
           {!isCollapsed && (
-            <span className="font-semibold text-gray-900 dark:text-white text-sm">
-              TransitFlow AI
-            </span>
+            <div className="flex flex-col">
+              <span className="font-bold text-slate-900 dark:text-white text-sm tracking-tight">
+                TransitFlow <span className="text-blue-500 font-mono text-xs">AI</span>
+              </span>
+              <span className="font-mono text-[9px] tracking-[0.2em] text-slate-400 dark:text-slate-500 uppercase">
+                Spatial GIS Engine
+              </span>
+            </div>
           )}
         </div>
       </div>
 
       {/* Nav Items */}
-      <nav className="flex-1 py-4 space-y-1 px-2">
+      <nav className="flex-1 py-5 space-y-1.5 px-2">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
@@ -68,15 +73,18 @@ export function Sidebar() {
               href={item.href}
               title={isCollapsed ? item.label : undefined}
               className={cn(
-                "flex items-center gap-3 py-2.5 rounded-lg text-xs font-semibold tracking-wider transition-colors overflow-hidden whitespace-nowrap",
-                isCollapsed ? "px-0 justify-center" : "px-3",
+                "flex items-center gap-3 py-2.5 rounded-xl text-[11px] font-semibold font-mono tracking-wider transition-all duration-150 overflow-hidden whitespace-nowrap relative group",
+                isCollapsed ? "px-0 justify-center" : "px-3.5",
                 isActive
-                  ? "bg-blue-600 text-white shadow-md shadow-blue-600/20"
-                  : "text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white",
+                  ? "bg-blue-600 text-white shadow-lg shadow-blue-600/25 border border-blue-400/30"
+                  : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/[0.05] hover:text-slate-900 dark:hover:text-white border border-transparent",
               )}
             >
-              <Icon size={16} className="shrink-0" />
+              <Icon size={16} className={cn("shrink-0 transition-transform duration-200 group-hover:scale-110", isActive && "text-white")} />
               {!isCollapsed && <span>{item.label}</span>}
+              {isActive && !isCollapsed && (
+                <span className="absolute right-2.5 w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+              )}
             </Link>
           );
         })}
@@ -85,8 +93,8 @@ export function Sidebar() {
       {/* Operator Footer */}
       <div
         className={cn(
-          "py-4 border-t border-gray-100 dark:border-slate-800",
-          isCollapsed ? "px-2" : "px-3",
+          "py-4 border-t border-slate-100 dark:border-white/[0.06]",
+          isCollapsed ? "px-2" : "px-3.5",
         )}
       >
         <div
@@ -95,20 +103,20 @@ export function Sidebar() {
             isCollapsed && "justify-center",
           )}
         >
-          <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shrink-0 cursor-pointer hover:opacity-90 transition-opacity">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-mono font-bold shrink-0 shadow-md shadow-blue-500/20 cursor-pointer hover:opacity-90 transition-opacity">
             OA
           </div>
           {!isCollapsed && (
             <>
               <div className="flex-1 min-w-0">
-                <div className="text-xs font-semibold text-gray-900 dark:text-white truncate">
+                <div className="text-xs font-semibold text-slate-900 dark:text-slate-100 truncate">
                   Operator Admin
                 </div>
-                <div className="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-wide">
-                  Transit Auth · v1.1
+                <div className="font-mono text-[9px] text-slate-400 dark:text-slate-500 uppercase tracking-[0.15em]">
+                  Auth · v1.2.0
                 </div>
               </div>
-              <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+              <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
                 <Settings size={14} />
               </button>
             </>

@@ -125,10 +125,13 @@ export function SurveyFormView() {
 
       {/* Modal overlay */}
       <div className="absolute inset-0 flex items-start justify-start p-4 z-10 pointer-events-none">
-        <div className="pointer-events-auto bg-[#1e2d3d] text-white rounded-2xl shadow-2xl w-[340px] max-h-[88vh] flex flex-col">
+        <div className="pointer-events-auto bg-white/95 dark:bg-[#0c1019]/95 backdrop-blur-2xl text-slate-900 dark:text-white border border-slate-200/80 dark:border-white/[0.08] rounded-2xl shadow-2xl w-[360px] max-h-[88vh] flex flex-col transition-all duration-200">
           {/* Modal header */}
-          <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-white/10 shrink-0">
-            <h2 className="font-bold text-base text-white">New Field Survey</h2>
+          <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-slate-100 dark:border-white/[0.06] shrink-0">
+            <div>
+              <h2 className="font-bold text-base text-slate-900 dark:text-white tracking-tight">New Field Survey</h2>
+              <p className="font-mono text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-0.5">Spatial Data Ingest</p>
+            </div>
             <Link
               href="/dashboard"
               className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"

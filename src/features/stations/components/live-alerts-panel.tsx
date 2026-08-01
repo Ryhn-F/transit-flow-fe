@@ -36,65 +36,56 @@ export function LiveAlertsPanel() {
   const newCount = MOCK_ALERTS.length;
 
   return (
-    <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-gray-100 dark:border-slate-800 rounded-xl shadow-xl p-4 w-72 transition-colors duration-200">
+    <div className="bg-white/95 dark:bg-[#0c1019]/95 backdrop-blur-xl border border-slate-200/80 dark:border-white/[0.08] rounded-2xl shadow-2xl p-4.5 w-76 transition-all duration-200">
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-          Live Alerts
+        <h3 className="font-mono text-[10px] font-bold text-slate-400 dark:text-slate-400 uppercase tracking-[0.2em]">
+          Live Risk Stream
         </h3>
         {newCount > 0 && (
-          <span className="px-2 py-0.5 bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 text-[10px] font-bold rounded-full">
-            {newCount} NEW
+          <span className="px-2 py-0.5 bg-rose-500/10 text-rose-500 border border-rose-500/20 font-mono text-[9px] font-bold rounded-full flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+            {newCount} LIVE
           </span>
         )}
       </div>
 
-      {/* Alerts */}
+      {/* Alerts Feed */}
       <div className="space-y-3">
         {MOCK_ALERTS.map((alert) => (
-          <div key={alert.id} className="flex gap-3">
-            {/* Left color bar */}
+          <div key={alert.id} className="flex gap-3 group">
+            {/* Left status vertical indicator */}
             <div
               className={cn(
-                "w-0.5 rounded-full shrink-0",
-                alert.type === "CRITICAL" ? "bg-red-500" : "bg-orange-400",
+                "w-1 rounded-full shrink-0 transition-all",
+                alert.type === "CRITICAL" ? "bg-rose-500 glow-crimson" : "bg-amber-400 glow-amber",
               )}
             />
-            <div className="flex gap-2 flex-1">
+            <div className="flex gap-2.5 flex-1 min-w-0">
               {/* Icon */}
               <div
                 className={cn(
-                  "w-7 h-7 rounded-md flex items-center justify-center shrink-0 mt-0.5",
+                  "w-7 h-7 rounded-xl flex items-center justify-center shrink-0 mt-0.5 border border-transparent shadow-sm",
                   alert.type === "CRITICAL"
-                    ? "bg-red-100 dark:bg-red-950/60"
-                    : "bg-orange-100 dark:bg-orange-950/60",
+                    ? "bg-rose-500/10 border-rose-500/20 text-rose-500"
+                    : "bg-amber-500/10 border-amber-500/20 text-amber-500",
                 )}
               >
                 {alert.icon === "danger" ? (
-                  <AlertTriangle
-                    size={14}
-                    className={
-                      alert.type === "CRITICAL"
-                        ? "text-red-500"
-                        : "text-orange-500"
-                    }
-                  />
+                  <AlertTriangle size={13} />
                 ) : (
-                  <ParkingSquare
-                    size={14}
-                    className="text-orange-500"
-                  />
+                  <ParkingSquare size={13} />
                 )}
               </div>
               {/* Text */}
               <div className="flex-1 min-w-0">
-                <div className="text-sm font-semibold text-gray-900 dark:text-white leading-tight">
+                <div className="text-xs font-bold text-slate-900 dark:text-slate-100 leading-tight">
                   {alert.title}
                 </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-snug">
+                <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug">
                   {alert.description}
                 </div>
-                <div className="text-[10px] text-gray-400 dark:text-gray-500 mt-1">
+                <div className="font-mono text-[9px] text-slate-400 dark:text-slate-400 mt-1">
                   {alert.relativeTime}
                 </div>
               </div>

@@ -77,11 +77,12 @@ export function TopBar({ showSearch = true }: TopBarProps) {
   }
 
   return (
-    <div className="flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 shrink-0 transition-colors duration-200">
+    <div className="flex items-center gap-3 px-5 py-3.5 bg-white/90 dark:bg-[#0c1019]/90 backdrop-blur-md border-b border-slate-200/80 dark:border-white/[0.08] shrink-0 transition-colors duration-200 z-20">
       {/* Station scope dropdown */}
-      <button className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 dark:bg-slate-800 rounded-full text-sm font-medium text-gray-700 dark:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors">
-        <span>Dukuh Atas</span>
-        <ChevronDown size={14} />
+      <button className="flex items-center gap-2 px-3.5 py-1.5 bg-slate-100 dark:bg-[#141b2b] border border-slate-200/60 dark:border-white/10 rounded-xl text-xs font-mono font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200/70 dark:hover:bg-white/[0.08] transition-all duration-150 shadow-sm">
+        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+        <span>Dukuh Atas Hub</span>
+        <ChevronDown size={13} className="text-slate-400" />
       </button>
 
       {/* Search */}
@@ -90,34 +91,34 @@ export function TopBar({ showSearch = true }: TopBarProps) {
           {/* Icon — spinner when loading, magnifier otherwise */}
           {isLoading ? (
             <Loader2
-              size={15}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-500 animate-spin"
+              size={14}
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-500 animate-spin"
             />
           ) : (
             <Search
-              size={15}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500"
+              size={14}
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500"
             />
           )}
 
           <input
             type="text"
-            placeholder="Search station..."
+            placeholder="Search spatial nodes (e.g. Dukuh Atas)..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => results.length > 0 && setIsOpen(true)}
-            className="w-full pl-9 pr-4 py-1.5 bg-gray-100 dark:bg-slate-800 rounded-full text-sm text-gray-700 dark:text-slate-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all"
+            className="w-full pl-9 pr-4 py-1.5 bg-slate-100/90 dark:bg-[#141b2b]/90 border border-slate-200/60 dark:border-white/10 rounded-xl text-xs font-mono text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-blue-500/60 focus:ring-1 focus:ring-blue-500/30 transition-all duration-150 shadow-inner"
           />
 
           {/* Search results dropdown */}
           {isOpen && (
-            <div className="absolute top-full left-0 right-0 mt-1.5 bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-xl shadow-xl z-50 overflow-hidden">
+            <div className="absolute top-full left-0 right-0 mt-2 bg-white/95 dark:bg-[#0e1422]/95 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden">
               {results.length === 0 ? (
-                <div className="px-4 py-3 text-xs text-gray-400 dark:text-gray-500 text-center">
-                  No stations found
+                <div className="px-4 py-3 text-xs font-mono text-slate-400 dark:text-slate-500 text-center">
+                  No matching spatial nodes found
                 </div>
               ) : (
-                <ul className="max-h-60 overflow-y-auto divide-y divide-gray-50 dark:divide-slate-800/50">
+                <ul className="max-h-60 overflow-y-auto divide-y divide-slate-100 dark:divide-white/[0.06]">
                   {results.map((feature) => {
                     const s = feature.properties;
                     return (
@@ -125,25 +126,25 @@ export function TopBar({ showSearch = true }: TopBarProps) {
                         <button
                           type="button"
                           onClick={() => handleSelect(feature)}
-                          className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-blue-50 dark:hover:bg-slate-800/70 text-left transition-colors group"
+                          className="w-full px-4 py-2.5 flex items-center gap-3 hover:bg-blue-50/80 dark:hover:bg-white/[0.06] text-left transition-colors group"
                         >
                           <MapPin
                             size={14}
-                            className="text-blue-500 shrink-0 group-hover:text-blue-600"
+                            className="text-blue-500 shrink-0 group-hover:scale-110 transition-transform"
                           />
                           <div className="min-w-0">
-                            <p className="text-sm font-medium text-gray-800 dark:text-slate-100 truncate">
+                            <p className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate">
                               {s.station_name}
                             </p>
-                            <p className="text-xs text-gray-400 dark:text-gray-500 truncate">
+                            <p className="text-[10px] font-mono text-slate-400 dark:text-slate-400 truncate mt-0.5">
                               {s.operator} ·{" "}
                               <span
                                 className={
                                   s.status === "OPERATIONAL"
-                                    ? "text-green-500"
+                                    ? "text-emerald-500 font-semibold"
                                     : s.status === "CONGESTED"
-                                      ? "text-red-500"
-                                      : "text-amber-500"
+                                      ? "text-rose-500 font-semibold"
+                                      : "text-amber-500 font-semibold"
                                 }
                               >
                                 {s.status}
@@ -166,20 +167,20 @@ export function TopBar({ showSearch = true }: TopBarProps) {
       {/* Theme Toggle Button */}
       <button
         onClick={toggleTheme}
-        className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800"
+        className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all duration-150 rounded-xl border border-slate-200/60 dark:border-white/10 bg-slate-100/80 dark:bg-[#141b2b] hover:border-slate-300 dark:hover:border-white/20 active:scale-95 shadow-sm"
         title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
       >
-        {theme === "dark" ? <Sun size={18} className="text-amber-400" /> : <Moon size={18} className="text-indigo-400" />}
+        {theme === "dark" ? <Sun size={15} className="text-amber-400" /> : <Moon size={15} className="text-indigo-400" />}
       </button>
 
       {/* Notification bell */}
-      <button className="relative p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
-        <Bell size={18} />
-        <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
+      <button className="relative p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all duration-150 rounded-xl border border-slate-200/60 dark:border-white/10 bg-slate-100/80 dark:bg-[#141b2b] active:scale-95 shadow-sm">
+        <Bell size={15} />
+        <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full animate-pulse" />
       </button>
 
       {/* Avatar */}
-      <button className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold hover:bg-blue-700 transition-colors">
+      <button className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white text-xs font-mono font-bold hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-150">
         OA
       </button>
     </div>
