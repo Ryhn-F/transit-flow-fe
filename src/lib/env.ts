@@ -1,12 +1,14 @@
 import { z } from "zod";
 
 const envSchema = z.object({
-  NEXT_PUBLIC_API_BASE_URL: z.string().url(),
+  NEXT_PUBLIC_API_BASE_URL: z.string().default("/api"),
   NEXT_PUBLIC_MAPLIBRE_STYLE_URL: z.string().url(),
   NEXT_PUBLIC_MAPLIBRE_API_KEY: z.string().optional(),
   NEXT_PUBLIC_DEFAULT_MAP_CENTER_LAT: z.coerce.number(),
   NEXT_PUBLIC_DEFAULT_MAP_CENTER_LNG: z.coerce.number(),
   NEXT_PUBLIC_DEFAULT_MAP_ZOOM: z.coerce.number().default(11),
+  SUPABASE_URL: z.string().url().optional(),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
 });
 
 export const env = envSchema.parse({
@@ -18,4 +20,6 @@ export const env = envSchema.parse({
   NEXT_PUBLIC_DEFAULT_MAP_CENTER_LNG:
     process.env.NEXT_PUBLIC_DEFAULT_MAP_CENTER_LNG,
   NEXT_PUBLIC_DEFAULT_MAP_ZOOM: process.env.NEXT_PUBLIC_DEFAULT_MAP_ZOOM,
+  SUPABASE_URL: process.env.SUPABASE_URL,
+  SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
 });
