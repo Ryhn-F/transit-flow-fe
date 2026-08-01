@@ -26,14 +26,14 @@ export function Sidebar() {
   return (
     <div
       className={cn(
-        "flex flex-col h-full bg-white dark:bg-[#0c1019] border-r border-slate-200/80 dark:border-white/[0.08] shrink-0 transition-all duration-300 relative z-20",
+        "flex flex-col h-full bg-white dark:bg-[#0c1019] border-r border-slate-200/80 dark:border-white/[0.08] shrink-0 transition-all duration-300 relative z-40",
         isCollapsed ? "w-16" : "w-56",
       )}
     >
       {/* Collapse Toggle */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute -right-3 top-6 w-6 h-6 bg-white dark:bg-[#141b2b] border border-slate-200 dark:border-white/10 rounded-full flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white shadow-md z-30 transition-transform active:scale-95"
+        className="absolute -right-3 top-6 w-6 h-6 bg-white dark:bg-[#141b2b] border border-slate-200 dark:border-white/10 rounded-full flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white shadow-md z-50 transition-transform active:scale-95 cursor-pointer"
       >
         {isCollapsed ? <ChevronRight size={13} /> : <ChevronLeft size={13} />}
       </button>
