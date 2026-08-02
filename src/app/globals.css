@@ -104,3 +104,44 @@ nextjs-portal,
 .glow-amber {
   box-shadow: 0 0 16px rgba(245, 158, 11, 0.35);
 }
+
+/* New AI attachment card pop-in */
+.ai-attach-pop {
+  animation: aiAttachPop 1.5s ease-out;
+}
+
+@keyframes aiAttachPop {
+  0% {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  30% {
+    transform: translateY(0);
+    opacity: 1;
+    box-shadow: 0 0 24px rgba(16, 185, 129, 0.45);
+  }
+  100% {
+    box-shadow: none;
+  }
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-attach-pop,
+  [class*="animate-pulse"],
+  [class*="animate-spin"],
+  [class*="animate-ping"],
+  [class*="animate-bounce"] {
+    animation: none !important;
+  }
+}

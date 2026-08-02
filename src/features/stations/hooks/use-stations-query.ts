@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { stationRepository } from "@/infrastructure/repositories/station-repository";
+import { getStationRepository } from "@/infrastructure/mock/provider-registry";
 
 export const STATIONS_QUERY_KEY = ["stations"] as const;
 
 export function useStationsQuery() {
   return useQuery({
     queryKey: STATIONS_QUERY_KEY,
-    queryFn: () => stationRepository.getAll(),
+    queryFn: () => getStationRepository().getAll(),
   });
 }

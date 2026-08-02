@@ -1,5 +1,5 @@
 import type GeoJSON from "geojson";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 import { toFeature, toFeatureCollection } from "@/lib/geojson";
 
 export interface SurveySubmissionInsert {
@@ -15,7 +15,7 @@ export interface SurveySubmissionInsert {
 
 export class ServerSurveyRepository {
   async findAll() {
-    const { data, error } = await supabase
+    const { data, error } = await getSupabase()
       .from("survey_submissions")
       .select("*")
       .order("created_at", { ascending: false });
@@ -29,7 +29,7 @@ export class ServerSurveyRepository {
   }
 
   async create(payload: SurveySubmissionInsert) {
-    const { data, error } = await supabase
+    const { data, error } = await getSupabase()
       .from("survey_submissions")
       .insert([payload])
       .select()

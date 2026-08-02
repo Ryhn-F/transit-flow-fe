@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Search, Bell, MapPin, Loader2, Sun, Moon, ChevronDown } from "lucide-react";
 import { useStationUIStore } from "@/features/stations/store/station-ui-store";
-import { stationRepository } from "@/infrastructure/repositories/station-repository";
+import { getStationRepository } from "@/infrastructure/mock/provider-registry";
 import { useThemeStore } from "@/lib/theme-store";
+import { DemoBadge } from "./demo-badge";
 import type { StationNode } from "@/entities/station";
 import type { GeoJSONFeature } from "@/entities/geojson";
 
@@ -44,7 +45,7 @@ export function TopBar({ showSearch = true }: TopBarProps) {
     debounceRef.current = setTimeout(async () => {
       setIsLoading(true);
       try {
-        const data = await stationRepository.search(trimmed);
+        const data = await getStationRepository().search(trimmed);
         setResults(data.features);
         setIsOpen(true);
       } catch {
@@ -84,7 +85,7 @@ export function TopBar({ showSearch = true }: TopBarProps) {
   return (
     <div className="flex items-center gap-3 px-5 py-3.5 bg-white/90 dark:bg-[#0c1019]/90 backdrop-blur-md border-b border-slate-200/80 dark:border-white/[0.08] shrink-0 transition-colors duration-200 z-20">
       {/* Station scope dropdown */}
-      <button className="flex items-center gap-2 px-3.5 py-1.5 bg-slate-100 dark:bg-[#141b2b] border border-slate-200/60 dark:border-white/10 rounded-xl text-xs font-mono font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200/70 dark:hover:bg-white/[0.08] transition-all duration-150 shadow-sm">
+      <button className="flex items-center gap-2 px-3.5 py-1.5 bg-slate-100 dark:bg-[#141b2b] border border-slate-200/60 dark:border-white/10 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-200/70 dark:hover:bg-white/[0.08] transition-all duration-150 shadow-sm">
         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
         <span>Dukuh Atas Hub</span>
         <ChevronDown size={13} className="text-slate-400" />
@@ -112,14 +113,14 @@ export function TopBar({ showSearch = true }: TopBarProps) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => results.length > 0 && setIsOpen(true)}
-            className="w-full pl-9 pr-4 py-1.5 bg-slate-100/90 dark:bg-[#141b2b]/90 border border-slate-200/60 dark:border-white/10 rounded-xl text-xs font-mono text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-blue-500/60 focus:ring-1 focus:ring-blue-500/30 transition-all duration-150 shadow-inner"
+            className="w-full pl-9 pr-4 py-1.5 bg-slate-100/90 dark:bg-[#141b2b]/90 border border-slate-200/60 dark:border-white/10 rounded-xl text-xs text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:border-blue-500/60 focus:ring-1 focus:ring-blue-500/30 transition-all duration-150 shadow-inner"
           />
 
           {/* Search results dropdown */}
           {isOpen && (
             <div className="absolute top-full left-0 right-0 mt-2 bg-white/95 dark:bg-[#0e1422]/95 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden">
               {results.length === 0 ? (
-                <div className="px-4 py-3 text-xs font-mono text-slate-400 dark:text-slate-500 text-center">
+                <div className="px-4 py-3 text-xs text-slate-400 dark:text-slate-500 text-center">
                   No matching spatial nodes found
                 </div>
               ) : (
@@ -168,6 +169,9 @@ export function TopBar({ showSearch = true }: TopBarProps) {
       )}
 
       <div className="flex-1" />
+
+      {/* Demo mode indicator */}
+      <DemoBadge />
 
       {/* Theme Toggle Button (mounted check prevents React SSR Hydration Mismatch) */}
       {mounted ? (
