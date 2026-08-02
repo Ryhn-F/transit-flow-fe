@@ -1,17 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { forecastLiveDriver } from "@/infrastructure/mock/forecast-live-driver";
-import { isDemoMode } from "@/infrastructure/mock/demo-mode";
+import { useDemoMode } from "@/infrastructure/mock/demo-mode";
 
 export function useForecastDriver(): boolean {
-  const [active] = useState(isDemoMode);
+  const demoOn = useDemoMode();
 
   useEffect(() => {
-    if (!active) return;
+    if (!demoOn) return;
     if (!forecastLiveDriver.isRunning()) forecastLiveDriver.start();
     return () => forecastLiveDriver.stop();
-  }, [active]);
+  }, [demoOn]);
 
-  return active;
+  return demoOn;
 }
