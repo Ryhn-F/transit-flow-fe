@@ -1,10 +1,10 @@
 import type GeoJSON from "geojson";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 import { toFeature, toFeatureCollection } from "@/lib/geojson";
 
 export class ServerStationRepository {
   async findAll() {
-    const { data, error } = await supabase
+    const { data, error } = await getSupabase()
       .from("station_nodes_geojson")
       .select("*");
 
@@ -17,7 +17,7 @@ export class ServerStationRepository {
   }
 
   async search(query: string) {
-    const { data, error } = await supabase
+    const { data, error } = await getSupabase()
       .from("station_nodes_geojson")
       .select("*")
       .ilike("station_name", `%${query}%`);
@@ -31,7 +31,7 @@ export class ServerStationRepository {
   }
 
   async findById(stationId: string) {
-    const { data, error } = await supabase
+    const { data, error } = await getSupabase()
       .from("station_nodes_geojson")
       .select("*")
       .eq("station_id", stationId)

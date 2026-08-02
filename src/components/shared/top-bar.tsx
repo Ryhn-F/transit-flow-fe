@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Search, Bell, MapPin, Loader2, Sun, Moon, ChevronDown } from "lucide-react";
 import { useStationUIStore } from "@/features/stations/store/station-ui-store";
-import { stationRepository } from "@/infrastructure/repositories/station-repository";
+import { getStationRepository } from "@/infrastructure/mock/provider-registry";
 import { useThemeStore } from "@/lib/theme-store";
+import { DemoBadge } from "./demo-badge";
 import type { StationNode } from "@/entities/station";
 import type { GeoJSONFeature } from "@/entities/geojson";
 
@@ -44,7 +45,7 @@ export function TopBar({ showSearch = true }: TopBarProps) {
     debounceRef.current = setTimeout(async () => {
       setIsLoading(true);
       try {
-        const data = await stationRepository.search(trimmed);
+        const data = await getStationRepository().search(trimmed);
         setResults(data.features);
         setIsOpen(true);
       } catch {
@@ -168,6 +169,9 @@ export function TopBar({ showSearch = true }: TopBarProps) {
       )}
 
       <div className="flex-1" />
+
+      {/* Demo mode indicator */}
+      <DemoBadge />
 
       {/* Theme Toggle Button (mounted check prevents React SSR Hydration Mismatch) */}
       {mounted ? (

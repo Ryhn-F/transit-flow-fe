@@ -7,6 +7,7 @@ interface StatChipProps {
   value: string;
   subLabel?: string;
   className?: string;
+  sansLabel?: boolean;
 }
 
 export function StatChip({
@@ -15,6 +16,7 @@ export function StatChip({
   value,
   subLabel,
   className,
+  sansLabel = false,
 }: StatChipProps) {
   return (
     <div
@@ -27,7 +29,16 @@ export function StatChip({
         <Icon size={16} className="text-blue-500" />
       </div>
       <div>
-        <div className="font-mono text-[9px] uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400 font-semibold">{label}</div>
+        <div
+          className={cn(
+            "text-slate-500 dark:text-slate-400 font-semibold",
+            sansLabel
+              ? "text-[11px] tracking-wide"
+              : "font-mono text-[9px] uppercase tracking-[0.15em]",
+          )}
+        >
+          {label}
+        </div>
         <div className="flex items-baseline gap-2">
           <span className="text-sm font-mono font-bold text-slate-900 dark:text-white tracking-tight">{value}</span>
           {subLabel && (

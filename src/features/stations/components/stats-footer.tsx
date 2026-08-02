@@ -10,10 +10,11 @@ export function StatsFooter() {
           label="Avg VCI (Today)"
           value="48.2"
           subLabel="Moderate"
+          sansLabel
         />
       </div>
       <div className="pointer-events-auto">
-        <StatChip icon={Clock} label="Est. Peak Time" value="17:30 - 19:00" />
+        <StatChip icon={Clock} label="Est. Peak Time" value="17:30 - 19:00" sansLabel />
       </div>
     </div>
   );
