@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart2, DoorOpen, Shield, Bot, Activity, CloudRain } from "lucide-react";
+import { BarChart2, DoorOpen, Shield, Bot, Activity, CloudRain, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useStationUIStore } from "@/features/stations/store/station-ui-store";
 
@@ -11,6 +11,7 @@ const LAYERS = [
   { key: "aiRecommendations" as const, label: "AI Recommendations", icon: Bot },
   { key: "vciHeatmap" as const, label: "Live VCI Heatmap", icon: Activity },
   { key: "rainMode" as const, label: "Rain Mode", icon: CloudRain },
+  { key: "forecast" as const, label: "48h Forecast", icon: TrendingUp },
 ];
 
 export function ActiveLayersPanel() {

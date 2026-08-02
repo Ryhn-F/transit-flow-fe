@@ -16,11 +16,14 @@ import { toast } from "sonner";
 import { useVCIDriver } from "@/infrastructure/mock/use-vci-driver";
 import { useBufferDriver } from "@/infrastructure/mock/use-buffer-driver";
 import { useWeatherDriver } from "@/infrastructure/mock/use-weather-driver";
+import { useForecastDriver } from "@/infrastructure/mock/use-forecast-driver";
 import { VciHeatmapLayer } from "@/features/vci/components/vci-heatmap-layer";
 import { VciInspectorPopover } from "@/features/vci/components/vci-inspector-popover";
 import { ChokeAlertBanner } from "@/features/vci/components/choke-alert-banner";
 import { AlertChannelFeed } from "@/features/vci/components/alert-channel-feed";
 import { RecalcCountdown } from "@/features/vci/components/recalc-countdown";
+import { ForecastLayerController } from "@/features/predictive/components/forecast-layer-controller";
+import { ForecastPanel } from "@/features/predictive/components/forecast-panel";
 import { RainModeOverlay } from "@/features/weather/components/rain-mode-overlay";
 import { RainfallChip } from "@/features/weather/components/rainfall-chip";
 import { FloodDepthFeed } from "@/features/weather/components/flood-depth-feed";
@@ -45,6 +48,7 @@ export function DashboardView() {
   useVCIDriver();
   useBufferDriver();
   useWeatherDriver();
+  useForecastDriver();
   const mapRef = useRef<MapLibreMap | null>(null);
   const markersRef = useRef<Marker[]>([]);
   const [mapInstance, setMapInstance] = useState<MapLibreMap | null>(null);
@@ -159,6 +163,7 @@ export function DashboardView() {
           <VciInspectorPopover map={mapInstance} />
           <RainModeOverlay map={mapInstance} enabled={layers.rainMode} />
           <RainfallChip />
+          <ForecastLayerController map={mapInstance} enabled={layers.forecast} />
 
           {/* Buffer allocator — editor tools & layers */}
           {bufferEnabled && (
@@ -193,6 +198,11 @@ export function DashboardView() {
             {layers.rainMode && (
               <div className="pointer-events-auto">
                 <FloodDepthFeed />
+              </div>
+            )}
+            {layers.forecast && (
+              <div className="pointer-events-auto">
+                <ForecastPanel />
               </div>
             )}
             {bufferEnabled && (
