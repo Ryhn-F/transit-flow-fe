@@ -5,6 +5,7 @@ interface LayerToggles {
   exitGates: boolean;
   temporaryBufferZone: boolean;
   aiRecommendations: boolean;
+  vciHeatmap: boolean;
 }
 
 interface FlyToTarget {
@@ -36,6 +37,7 @@ export const useStationUIStore = create<StationUIState>((set) => ({
     exitGates: true,
     temporaryBufferZone: false,
     aiRecommendations: false,
+    vciHeatmap: false,
   },
   is3DMode: false,
   setSearchQuery: (q) => set({ searchQuery: q }),

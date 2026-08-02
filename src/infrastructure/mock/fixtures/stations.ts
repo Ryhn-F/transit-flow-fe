@@ -90,6 +90,15 @@ export const DEMO_EXIT_CHANNELS: ExitChannel[] = [
     max_flow_rate_ppm: 22,
   },
   {
+    channel_id: "MGR-03",
+    station_id: "ST-MGR",
+    channel_name: "Gate 3",
+    physical_width_meters: 3.0,
+    effective_width_meters: 2.6,
+    walkway_compliance_factor: 0.75,
+    max_flow_rate_ppm: 25,
+  },
+  {
     channel_id: "SUD-E",
     station_id: "ST-SUD",
     channel_name: "Gate E",
@@ -97,6 +106,15 @@ export const DEMO_EXIT_CHANNELS: ExitChannel[] = [
     effective_width_meters: 2.4,
     walkway_compliance_factor: 0.7,
     max_flow_rate_ppm: 30,
+  },
+  {
+    channel_id: "SUD-W",
+    station_id: "ST-SUD",
+    channel_name: "Gate W",
+    physical_width_meters: 4.2,
+    effective_width_meters: 3.6,
+    walkway_compliance_factor: 0.82,
+    max_flow_rate_ppm: 38,
   },
 ];
 

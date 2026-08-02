@@ -13,6 +13,12 @@ import { useStationsQuery } from "./hooks/use-stations-query";
 import { useSelectedStation } from "./hooks/use-selected-station";
 import { useStationUIStore } from "./store/station-ui-store";
 import { toast } from "sonner";
+import { useVCIDriver } from "@/infrastructure/mock/use-vci-driver";
+import { VciHeatmapLayer } from "@/features/vci/components/vci-heatmap-layer";
+import { VciInspectorPopover } from "@/features/vci/components/vci-inspector-popover";
+import { ChokeAlertBanner } from "@/features/vci/components/choke-alert-banner";
+import { AlertChannelFeed } from "@/features/vci/components/alert-channel-feed";
+import { RecalcCountdown } from "@/features/vci/components/recalc-countdown";
 
 const STATUS_COLORS: Record<string, string> = {
   OPERATIONAL: "#22c55e",
@@ -21,13 +27,15 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export function DashboardView() {
+  useVCIDriver();
   const mapRef = useRef<MapLibreMap | null>(null);
   const markersRef = useRef<Marker[]>([]);
+  const [mapInstance, setMapInstance] = useState<MapLibreMap | null>(null);
   const [mapReady, setMapReady] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const { data: stationsData } = useStationsQuery();
   const selectedStation = useSelectedStation();
-  const { selectStation, flyToTarget, clearFlyTo } = useStationUIStore();
+  const { selectStation, flyToTarget, clearFlyTo, layers } = useStationUIStore();
 
   useEffect(() => {
     if (!flyToTarget || !mapRef.current) return;
@@ -99,6 +107,7 @@ export function DashboardView() {
 
   const handleMapReady = useCallback((map: MapLibreMap) => {
     mapRef.current = map;
+    setMapInstance(map);
     setMapReady(true);
   }, []);
 
@@ -133,9 +142,14 @@ export function DashboardView() {
 
   return (
     <AppShell>
+      {/* Choke alert banner (slides under top bar) */}
+      <ChokeAlertBanner />
+
       {/* Full-bleed map */}
       <div className="absolute inset-0">
         <MapCanvas onMapReady={handleMapReady} />
+        <VciHeatmapLayer map={mapInstance} enabled={layers.vciHeatmap} />
+        <VciInspectorPopover map={mapInstance} />
       </div>
 
       {/* Spatial Draw & Layer Controls */}
@@ -159,6 +173,14 @@ export function DashboardView() {
         <div className="pointer-events-auto overflow-y-auto max-h-64">
           <LiveAlertsPanel />
         </div>
+        <div className="pointer-events-auto">
+          <AlertChannelFeed />
+        </div>
+      </div>
+
+      {/* Recalc countdown chip — bottom-left */}
+      <div className="absolute bottom-4 left-4 z-10">
+        <RecalcCountdown />
       </div>
 
       {/* Stats footer */}

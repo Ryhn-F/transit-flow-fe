@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart2, DoorOpen, Shield, Bot } from "lucide-react";
+import { BarChart2, DoorOpen, Shield, Bot, Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useStationUIStore } from "@/features/stations/store/station-ui-store";
 
@@ -9,6 +9,7 @@ const LAYERS = [
   { key: "exitGates" as const, label: "Exit Gates", icon: DoorOpen },
   { key: "temporaryBufferZone" as const, label: "Temporary Buffer Zone", icon: Shield },
   { key: "aiRecommendations" as const, label: "AI Recommendations", icon: Bot },
+  { key: "vciHeatmap" as const, label: "Live VCI Heatmap", icon: Activity },
 ];
 
 export function ActiveLayersPanel() {
