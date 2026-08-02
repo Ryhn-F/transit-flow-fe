@@ -7,7 +7,7 @@ import { useStationUIStore } from "@/features/stations/store/station-ui-store";
 const LAYERS = [
   { key: "crowdDensity" as const, label: "Crowd Density", icon: BarChart2 },
   { key: "exitGates" as const, label: "Exit Gates", icon: DoorOpen },
-  { key: "temporaryBufferZone" as const, label: "Temporary Buffer Zone", icon: Shield },
+  { key: "temporaryBufferZone" as const, label: "Buffer Allocator (Experimental)", icon: Shield },
   { key: "aiRecommendations" as const, label: "AI Recommendations", icon: Bot },
   { key: "vciHeatmap" as const, label: "Live VCI Heatmap", icon: Activity },
 ];

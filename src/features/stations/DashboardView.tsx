@@ -14,11 +14,19 @@ import { useSelectedStation } from "./hooks/use-selected-station";
 import { useStationUIStore } from "./store/station-ui-store";
 import { toast } from "sonner";
 import { useVCIDriver } from "@/infrastructure/mock/use-vci-driver";
+import { useBufferDriver } from "@/infrastructure/mock/use-buffer-driver";
 import { VciHeatmapLayer } from "@/features/vci/components/vci-heatmap-layer";
 import { VciInspectorPopover } from "@/features/vci/components/vci-inspector-popover";
 import { ChokeAlertBanner } from "@/features/vci/components/choke-alert-banner";
 import { AlertChannelFeed } from "@/features/vci/components/alert-channel-feed";
 import { RecalcCountdown } from "@/features/vci/components/recalc-countdown";
+import { useSpatialEditor } from "@/features/buffer-allocator/map/use-spatial-editor";
+import { BufferEditorTools } from "@/features/buffer-allocator/components/buffer-editor-tools";
+import { BufferExportButton } from "@/features/buffer-allocator/components/buffer-export-button";
+import { BarrierToggleCard } from "@/features/buffer-allocator/components/barrier-toggle-card";
+import { CurbSlotPanel } from "@/features/buffer-allocator/components/curb-slot-panel";
+import { DispatchExportModal } from "@/features/buffer-allocator/components/dispatch-export-modal";
+import { useEditorStore } from "@/features/buffer-allocator/store/editor-store";
 
 const STATUS_COLORS: Record<string, string> = {
   OPERATIONAL: "#22c55e",
@@ -28,14 +36,17 @@ const STATUS_COLORS: Record<string, string> = {
 
 export function DashboardView() {
   useVCIDriver();
+  useBufferDriver();
   const mapRef = useRef<MapLibreMap | null>(null);
   const markersRef = useRef<Marker[]>([]);
   const [mapInstance, setMapInstance] = useState<MapLibreMap | null>(null);
   const [mapReady, setMapReady] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const { data: stationsData } = useStationsQuery();
   const selectedStation = useSelectedStation();
   const { selectStation, flyToTarget, clearFlyTo, layers } = useStationUIStore();
+  const bufferEnabled = layers.temporaryBufferZone;
+
+  useSpatialEditor(mapInstance, bufferEnabled);
 
   useEffect(() => {
     if (!flyToTarget || !mapRef.current) return;
@@ -128,18 +139,6 @@ export function DashboardView() {
     toast.success("Exported spatial GeoJSON file!");
   };
 
-  const handleToggleEdit = () => {
-    setIsEditing((prev) => {
-      const next = !prev;
-      if (next) {
-        toast.info("Spatial Editor Active: Map feature drawing enabled");
-      } else {
-        toast.info("Spatial Editor Inactive: Returned to View Mode");
-      }
-      return next;
-    });
-  };
-
   return (
     <AppShell>
       {/* Map area — banner flows above; all floating controls anchor to the map area below it */}
@@ -150,10 +149,16 @@ export function DashboardView() {
           <VciHeatmapLayer map={mapInstance} enabled={layers.vciHeatmap} />
           <VciInspectorPopover map={mapInstance} />
 
+          {/* Buffer allocator — editor tools & layers */}
+          {bufferEnabled && (
+            <>
+              <BufferEditorTools />
+              <BufferExportButton />
+            </>
+          )}
+
           {/* Spatial Draw & Layer Controls */}
           <MapDrawControl
-            isEditing={isEditing}
-            onToggleEdit={handleToggleEdit}
             onExportGeoJSON={handleExportGeoJSON}
             featuresCount={stationsData?.features?.length || 0}
           />
@@ -174,6 +179,16 @@ export function DashboardView() {
             <div className="pointer-events-auto">
               <AlertChannelFeed />
             </div>
+            {bufferEnabled && (
+              <>
+                <div className="pointer-events-auto">
+                  <BarrierToggleCards />
+                </div>
+                <div className="pointer-events-auto">
+                  <CurbSlotPanel />
+                </div>
+              </>
+            )}
           </div>
 
           {/* Recalc countdown chip — bottom-left */}
@@ -185,6 +200,26 @@ export function DashboardView() {
           <StatsFooter />
         </div>
       </div>
+
+      {/* Buffer dispatch export modal */}
+      <DispatchExportModal />
     </AppShell>
+  );
+}
+
+function BarrierToggleCards() {
+  const barriers = useEditorStore((s) => s.barriers);
+  if (barriers.length === 0) return null;
+  return (
+    <div className="bg-white/95 dark:bg-[#0c1019]/95 backdrop-blur-xl border border-slate-200/80 dark:border-white/[0.08] rounded-2xl shadow-2xl p-4 w-76 transition-all duration-200">
+      <h3 className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] mb-3">
+        Barrier Simulator
+      </h3>
+      <div className="space-y-2">
+        {barriers.map((b) => (
+          <BarrierToggleCard key={b.id} barrierId={b.id} />
+        ))}
+      </div>
+    </div>
   );
 }
