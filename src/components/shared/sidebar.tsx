@@ -11,6 +11,9 @@ import {
   Smartphone,
   MonitorPlay,
   Video,
+  Store,
+  Globe2,
+  Code2,
   Settings,
   ChevronLeft,
   ChevronRight,
@@ -25,6 +28,9 @@ const navItems = [
   { label: "COMMUTER PORTAL", href: "/portal", icon: Smartphone },
   { label: "COMMAND CENTER", href: "/command-center", icon: MonitorPlay },
   { label: "CCTV & IOT", href: "/cctv", icon: Video },
+  { label: "KIOSKS", href: "/kiosks", icon: Store },
+  { label: "NATIONAL", href: "/national", icon: Globe2 },
+  { label: "DEVELOPERS", href: "/developers", icon: Code2 },
 ];
 
 export function Sidebar() {
