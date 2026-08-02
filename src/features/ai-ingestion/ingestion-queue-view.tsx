@@ -3,7 +3,7 @@
 import { Search, Sparkles } from "lucide-react";
 import { AppShell } from "@/components/shared/app-shell";
 import { DemoBadge } from "@/components/shared/demo-badge";
-import { useDemoDriver } from "@/infrastructure/mock/use-live-driver";
+import { useLiveDriver } from "@/infrastructure/mock/use-live-driver";
 import { useDemoModeGate } from "./hooks/use-demo-mode-gate";
 import { ExtractionQueueList } from "./components/extraction-queue-list";
 import { ExtractionDetailDrawer } from "./components/extraction-detail-drawer";
@@ -23,7 +23,7 @@ const STATUS_FILTERS: Array<AiExtractionStatus | "ALL"> = [
 ];
 
 export function IngestionQueueView() {
-  useDemoDriver();
+  useLiveDriver();
   const demoMode = useDemoModeGate();
 
   const { filters, setFilter } = useAiIngestionUIStore();

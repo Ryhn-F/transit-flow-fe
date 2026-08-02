@@ -1,17 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { bufferLiveDriver } from "@/infrastructure/mock/buffer-live-driver";
-import { isDemoMode } from "@/infrastructure/mock/demo-mode";
+import { useDemoMode } from "@/infrastructure/mock/demo-mode";
 
 export function useBufferDriver(): boolean {
-  const [active] = useState(isDemoMode);
+  const demoOn = useDemoMode();
 
   useEffect(() => {
-    if (!active) return;
+    if (!demoOn) return;
     if (!bufferLiveDriver.isRunning()) bufferLiveDriver.start();
     return () => bufferLiveDriver.stop();
-  }, [active]);
+  }, [demoOn]);
 
-  return active;
+  return demoOn;
 }
