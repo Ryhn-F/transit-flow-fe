@@ -10,6 +10,7 @@ import {
   Sparkles,
   Smartphone,
   MonitorPlay,
+  Video,
   Settings,
   ChevronLeft,
   ChevronRight,
@@ -23,6 +24,7 @@ const navItems = [
   { label: "AI INGESTION", href: "/ai-ingestion", icon: Sparkles },
   { label: "COMMUTER PORTAL", href: "/portal", icon: Smartphone },
   { label: "COMMAND CENTER", href: "/command-center", icon: MonitorPlay },
+  { label: "CCTV & IOT", href: "/cctv", icon: Video },
 ];
 
 export function Sidebar() {
