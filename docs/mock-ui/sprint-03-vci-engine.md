@@ -21,7 +21,7 @@ formula via the inspector, and watch SLAs; operators validate <5s surge-alert de
 the banner + channel-feed UX that will carry their evening-rush triage.
 
 **Demo narrative:** open the dashboard → heatmap on → click the red zone to inspect the
-math → wait for the recalc → Gate B crosses 80 → banner flashes → Telegram/Discord/Email
+math → wait for the recalc → Gate B crosses 80 → banner flashes → Telegram/WhatsApp/Email
 deliveries tick into the feed. Full alert lifecycle in ~4 minutes, repeatable via
 deterministic seed 42.
 
@@ -30,7 +30,7 @@ deterministic seed 42.
 | Persona | In the mock, can… | In the mock, cannot… |
 | --- | --- | --- |
 | **Station Operator** (dashboard day-user, e.g. Manggarai control room) | Toggle the Live VCI layer; click zones to inspect the formula; acknowledge the choke banner; watch the recalc countdown | Change thresholds (locked at 80), dispatch wardens (Sprint 7), edit fixture data |
-| **Hub Station Master** (alert recipient, e.g. Dukuh Atas) | Watch simulated Telegram/Discord/Email deliveries arrive with timestamps; read alert detail incl. map link | Acknowledge from the dashboard (acknowledge is the operator's action) |
+| **Hub Station Master** (alert recipient, e.g. Dukuh Atas) | Watch simulated Telegram/WhatsApp/Email deliveries arrive with timestamps; read alert detail incl. map link | Acknowledge from the dashboard (acknowledge is the operator's action) |
 | **Dispatcher** (handoff recipient) | See the post-acknowledge SLA timer and the handoff note appear in the feed; watch escalation if SLA lapses | Operate the map or mutate liveness parameters |
 
 ## 3. Information Architecture & Flow (D3)
@@ -50,7 +50,7 @@ Recalc countdown chip (bottom-left map stack)
 | --- | --- |
 | Monitor | Open `/dashboard` → toggle **"Live VCI Heatmap"** → read 8 color-coded zones → click red zone → formula inspector |
 | Respond | Banner fires (VCI ≥ 80) → audio cue → operator clicks **Acknowledge & Dispatch** → banner collapses, SLA timer starts, handoff appears in feed |
-| Verify delivery | Open **Alert Channel Feed** → Telegram / Discord / Email tabs → delivery ticks + timestamps |
+| Verify delivery | Open **Alert Channel Feed** → Telegram / WhatsApp / Email tabs → delivery ticks + timestamps |
 | Recovery | Feed tab shows a failed delivery → "Retrying" → succeeds on next driver tick; banner re-fires only after hysteresis |
 
 ## 4. Screen & Component Specs (D4)
@@ -83,7 +83,7 @@ Recalc countdown chip (bottom-left map stack)
   (`mono`, `SLA 14:32`), which turns red at < 5:00 and escalates the handoff to the feed.
 
 ### 4.4 Alert Channel Feed (`alert-channel-feed.tsx`)
-- Right-rail panel, tabs **Telegram / Discord / Email**; each message: channel icon,
+- Right-rail panel, tabs **Telegram / WhatsApp / Email**; each message: channel icon,
   alert title, delivery tick, status dot.
 - **Default:** seeded history; **Empty tab:** "No Telegram messages delivered yet";
   **Loading:** skeleton rows; **Error:** "Delivery feed unavailable — Retry".
@@ -156,7 +156,7 @@ pedestrian counts). All fields snake_case to match `src/entities/vci-metric.ts`.
 | --- | --- | --- |
 | `VCIMetric` (exists) | `channel_id, timestamp, pedestrian_flow_rate_ppm, vehicular_dropoff_surge_vpm, effective_width_m, compliance_factor, vci_score (0–100), alert_level: NORMAL\|WARNING\|CRITICAL` | 8 exits × 96 history points (15-min → 24h) |
 | `VCIAlert` | `alert_id, channel_id, station_name, vci_score, raised_at, status: OPEN\|ACKNOWLEDGED\|ESCALATED, sla_deadline?` | 6 seeded + 1 scripted (Gate B) |
-| `ChannelDelivery` | `delivery_id, alert_id, channel: TELEGRAM\|DISCORD\|EMAIL, status: QUEUED\|DELIVERED\|FAILED\|RETRYING, attempt, delivered_at?` | 6 Telegram / 5 Discord / 4 Email seeded |
+| `ChannelDelivery` | `delivery_id, alert_id, channel: TELEGRAM\|WhatsApp\|EMAIL, status: QUEUED\|DELIVERED\|FAILED\|RETRYING, attempt, delivered_at?` | 6 Telegram / 5 WhatsApp / 4 Email seeded |
 | `VCISnapshot` | `generated_at, metrics: VCIMetric[], alerts: VCIAlert[]` | per-tick, from driver |
 
 **Seed:** 3 stations — Manggarai (3 exits), Dukuh Atas (3), Sudirman (2). Deterministic
@@ -170,7 +170,7 @@ rush realism (Manggarai + Dukuh Atas per sprint stress-test note); compliance fa
 | --- | --- |
 | Recalc | Every 60s (`vci_tick`); visible countdown; scores drift `score(t) = base + A·sin(2π(t−t₀)/T) + jitter(±2, seed 42)`, `T=240s` for the scripted Gate B climb |
 | Threshold crossing | `vci_score ≥ 80` → `CRITICAL` + `vci_alert_triggered`; fires once per exit until acknowledged **or** score < 70 (hysteresis) |
-| Channel delivery | Telegram +2s, Discord +5s, Email +12s after trigger (sprint spec: broadcast <5s); one seeded `FAILED` (Email, attempt 2) to demo retry |
+| Channel delivery | Telegram +2s, WhatsApp +5s, Email +12s after trigger (sprint spec: broadcast <5s); one seeded `FAILED` (Email, attempt 2) to demo retry |
 | SLA | Acknowledge starts 15:00 countdown; < 5:00 banner turns rose-dark; lapse → `ESCALATED` handoff in feed |
 | `prefers-reduced-motion` | No flash/pulse/glow animation; audio cue muted; cross-fades become 0ms |
 | Tab visibility | `document.hidden` → driver pauses; on return, exactly one catch-up tick (no burst); stale tags shown while hidden > 90s |
@@ -215,7 +215,7 @@ tick), `["vci","history", channelId]`, `["vci","alerts"]`. Driver events mutate
 vciLiveStore: { snapshot: VCISnapshot|null, countdownSec: number, deliveries: ChannelDelivery[],
   start(), stop(), applyTick(), applyAlertTriggered(a: VCIAlert), applyDelivery(d: ChannelDelivery), applyAck(alertId: string) }
 vciUIStore: { vciLayerOn: boolean, selectedZoneId: string|null, ackIds: string[],
-  channelTab: "TELEGRAM"|"DISCORD"|"EMAIL", toggleVCILayer(), selectZone(id|null), acknowledge(id) }
+  channelTab: "TELEGRAM"|"WhatsApp"|"EMAIL", toggleVCILayer(), selectZone(id|null), acknowledge(id) }
 ```
 
 **MapLibre layer spec (v6)**
@@ -251,7 +251,7 @@ acknowledge → SLA timer + toast; feed tabs switch; `prefers-reduced-motion` co
 1. Open `/dashboard`; DEMO badge visible; enable **Live VCI Heatmap** → 3 green, 4 yellow, 1 red zone.
 2. Click the red zone → inspector shows formula + live values; hover terms for tooltips.
 3. Watch `RECALC IN 34S` → at 0, Gate B climbs 88 → banner slides in, audio cue; acknowledge → toast + SLA timer `15:00`.
-4. Open **Alert Channel Feed** → Telegram delivered, Discord +5s, Email retry → success; handoff note in feed.
+4. Open **Alert Channel Feed** → Telegram delivered, WhatsApp +5s, Email retry → success; handoff note in feed.
 
 **Acceptance criteria:** all scores/heatmaps/alerts derive from live-driver state — zero
 hardcoded JSX; deterministic replay (seed 42) yields identical demo; `prefers-reduced-motion`

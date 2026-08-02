@@ -29,7 +29,7 @@ export const vciAlertSchema = z.object({
 export const channelDeliverySchema = z.object({
   delivery_id: z.string(),
   alert_id: z.string(),
-  channel: z.enum(["TELEGRAM", "DISCORD", "EMAIL"]),
+  channel: z.enum(["TELEGRAM", "WHATSAPP", "EMAIL"]),
   status: z.enum(["QUEUED", "DELIVERED", "FAILED", "RETRYING"]),
   attempt: z.number().int().min(1),
   queued_at: z.string(),

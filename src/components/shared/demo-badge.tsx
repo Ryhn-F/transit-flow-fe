@@ -1,5 +1,6 @@
 "use client";
 
+import { Sparkles } from "lucide-react";
 import { isDemoMode } from "@/infrastructure/mock/demo-mode";
 
 export function DemoBadge() {
@@ -8,9 +9,10 @@ export function DemoBadge() {
   return (
     <span
       role="status"
-      className="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/25 font-mono text-[9px] font-bold uppercase tracking-[0.15em] glow-amber shrink-0"
+      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 dark:text-indigo-400 text-[11px] font-medium shrink-0"
     >
-      DEMO MODE · Fixture Data
+      <Sparkles size={11} />
+      Demo Mode
     </span>
   );
 }

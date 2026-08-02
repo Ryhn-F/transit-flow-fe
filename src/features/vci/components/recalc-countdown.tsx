@@ -29,13 +29,13 @@ export function RecalcCountdown() {
   return (
     <div className="bg-white/95 dark:bg-[#0c1019]/95 backdrop-blur-xl border border-slate-200/80 dark:border-white/[0.08] rounded-xl px-3 py-1.5 shadow-xl inline-flex items-center gap-2">
       {flash ? (
-        <span className={cn("font-mono text-[10px] font-bold uppercase tracking-wider text-blue-400", !reduced && "animate-pulse")}>
-          RECALCULATING
+        <span className={cn("text-[11px] font-semibold text-blue-500", !reduced && "animate-pulse")}>
+          Updating scores…
         </span>
       ) : (
         <>
-          <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-slate-500 dark:text-slate-400">
-            RECALC IN
+          <span className="text-[11px] font-semibold text-slate-600 dark:text-slate-300">
+            Scores update in
           </span>
           <span className="font-mono text-[10px] font-bold text-slate-900 dark:text-white tabular-nums">
             {countdownSec}s

@@ -29,7 +29,7 @@ export interface VCIAlert {
   acknowledged_note: string | null;
 }
 
-export type DeliveryChannel = "TELEGRAM" | "DISCORD" | "EMAIL";
+export type DeliveryChannel = "TELEGRAM" | "WHATSAPP" | "EMAIL";
 
 export type DeliveryStatus = "QUEUED" | "DELIVERED" | "FAILED" | "RETRYING";
 

@@ -1,19 +1,18 @@
 "use client";
 
-import { Send, MessageSquare, Mail } from "lucide-react";
+import { Send, MessageCircle, Mail } from "lucide-react";
 import { useVCILiveStore } from "../store/vci-live-store";
 import { useVCIUIStore } from "../store/vci-ui-store";
 import { cn } from "@/lib/utils";
 import type { DeliveryChannel } from "@/entities/vci-metric";
 
-const CHANNELS: DeliveryChannel[] = ["TELEGRAM", "DISCORD", "EMAIL"];
+const CHANNELS: DeliveryChannel[] = ["TELEGRAM", "WHATSAPP", "EMAIL"];
 
 const CHANNEL_META: Record<DeliveryChannel, { label: string; icon: typeof Send; color: string }> = {
   TELEGRAM: { label: "Telegram", icon: Send, color: "text-blue-400" },
-  DISCORD: { label: "Discord", icon: MessageSquare, color: "text-indigo-400" },
+  WHATSAPP: { label: "WhatsApp", icon: MessageCircle, color: "text-emerald-400" },
   EMAIL: { label: "Email", icon: Mail, color: "text-amber-400" },
 };
-
 export function AlertChannelFeed() {
   const deliveries = useVCILiveStore((s) => s.deliveries);
   const alerts = useVCILiveStore((s) => s.alerts);
@@ -43,27 +42,29 @@ export function AlertChannelFeed() {
       <div className="flex gap-1 mb-3" role="tablist" aria-label="Alert channels">
         {CHANNELS.map((channel) => {
           const Icon = CHANNEL_META[channel].icon;
-          const count = deliveries.filter((d) => d.channel === channel).length;
           return (
             <button
               key={channel}
               role="tab"
+              id={`feed-tab-${channel.toLowerCase()}`}
               aria-selected={channelTab === channel}
+              aria-controls="feed-tabpanel"
               onClick={() => setChannelTab(channel)}
               className={cn(
-                "flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-[10px] font-semibold uppercase tracking-wider border transition-all duration-150",
+                "flex-1 min-w-0 flex items-center justify-center gap-1 px-1 py-2.5 min-h-10 rounded-xl text-[11px] font-semibold border transition-all duration-150",
                 channelTab === channel
                   ? "bg-blue-600 text-white border-blue-400/30 shadow-md shadow-blue-600/25"
                   : "bg-slate-100 dark:bg-[#141b2b] text-slate-600 dark:text-slate-400 border-slate-200/60 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20",
               )}
             >
-              <Icon size={11} className={channelTab === channel ? "text-white" : CHANNEL_META[channel].color} />
-              {CHANNEL_META[channel].label}
-              <span className="font-mono text-[8px] opacity-70">{count}</span>
+              <Icon size={12} className={cn("shrink-0", channelTab === channel ? "text-white" : CHANNEL_META[channel].color)} />
+              <span className="truncate">{CHANNEL_META[channel].label}</span>
             </button>
           );
         })}
       </div>
+
+      <div id="feed-tabpanel" role="tabpanel" aria-label={`${CHANNEL_META[channelTab].label} messages`}>
 
       {tabItems.length === 0 ? (
         <p className="text-xs text-slate-500 dark:text-slate-400 py-4 text-center">
@@ -117,6 +118,7 @@ export function AlertChannelFeed() {
           })}
         </ul>
       )}
+      </div>
     </div>
   );
 }

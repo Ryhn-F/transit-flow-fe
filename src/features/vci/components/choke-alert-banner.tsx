@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { AlertTriangle, UserCheck } from "lucide-react";
 import { useVCILiveStore } from "../store/vci-live-store";
 import { useVCIUIStore } from "../store/vci-ui-store";
 import { useAcknowledgeAlert } from "../hooks/use-acknowledge-alert";
@@ -28,6 +29,14 @@ function playChime() {
   }
 }
 
+export function useOpenChokeAlert() {
+  const alerts = useVCILiveStore((s) => s.alerts);
+  const ackIds = useVCIUIStore((s) => s.ackIds);
+  return alerts.find(
+    (a) => a.status === "OPEN" && !ackIds.includes(a.alert_id),
+  ) ?? null;
+}
+
 export function ChokeAlertBanner() {
   const alerts = useVCILiveStore((s) => s.alerts);
   const ackIds = useVCIUIStore((s) => s.ackIds);
@@ -36,9 +45,7 @@ export function ChokeAlertBanner() {
   const [now, setNow] = useState(() => Date.now());
   const playedRef = useRef<Set<string>>(new Set());
 
-  const open = alerts.find(
-    (a) => a.status === "OPEN" && !ackIds.includes(a.alert_id),
-  );
+  const open = useOpenChokeAlert();
 
   // Acknowledged alerts still tracking their SLA render as a slim chip.
   const tracking = alerts
@@ -67,20 +74,23 @@ export function ChokeAlertBanner() {
     return (
       <div
         role="status"
-        aria-label={`${tracking.length} open choke alert${tracking.length === 1 ? "" : "s"} tracking SLA`}
-        className={cn(
-          "absolute top-0 left-0 right-0 z-30 flex items-center gap-2.5 px-5 py-1.5 border-b bg-rose-500/10 border-rose-500/30 backdrop-blur-xl",
-          slaLow && "bg-rose-600/20",
-          !reduced && "glow-crimson",
-        )}
+        aria-label={`${tracking.length} alert${tracking.length === 1 ? "" : "s"} awaiting response`}
+        className="relative z-30 flex items-center gap-2.5 px-5 py-1.5 border-b bg-rose-500/10 border-rose-500/30 backdrop-blur-xl shrink-0"
       >
         <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
-        <p className="font-mono text-[10px] font-bold uppercase tracking-wider text-rose-400">
-          {tracking.length} OPEN
+        <p className="text-[11px] font-semibold text-slate-800 dark:text-slate-200">
+          {tracking.length === 1
+            ? "Alert acknowledged — respond within"
+            : `${tracking.length} alerts acknowledged — respond within`}
         </p>
         {timer && (
-          <span className={cn("font-mono text-[10px] font-bold tracking-wider", slaLow ? "text-rose-300" : "text-rose-400")}>
-            SLA {timer}
+          <span
+            className={cn(
+              "font-mono text-[11px] font-bold tabular-nums transition-colors duration-300",
+              slaLow ? "text-rose-400" : "text-slate-600 dark:text-slate-300",
+            )}
+          >
+            {timer}
           </span>
         )}
       </div>
@@ -91,26 +101,41 @@ export function ChokeAlertBanner() {
     <div
       role="alert"
       className={cn(
-        "absolute top-0 left-0 right-0 z-30 flex items-center gap-3 px-5 py-3 border-b bg-rose-500/10 border-rose-500/30 backdrop-blur-xl",
+        "relative z-30 flex items-center gap-4 px-5 py-3 border-b bg-rose-500/10 border-rose-500/30 backdrop-blur-xl shrink-0",
         slaLow && "bg-rose-600/20",
         !reduced && "glow-crimson",
       )}
     >
-      <span className={cn("w-2 h-2 rounded-full bg-rose-500 shrink-0", !reduced && "animate-pulse")} />
+      {/* Severity icon */}
+      <div className="w-9 h-9 rounded-xl bg-rose-500/15 border border-rose-500/25 flex items-center justify-center shrink-0">
+        <AlertTriangle size={16} className={cn("text-rose-400", !reduced && "animate-pulse")} />
+      </div>
+
+      {/* Plain-language message + action */}
       <div className="flex-1 min-w-0">
-        <p className="font-mono text-[10px] font-bold uppercase tracking-[0.15em] text-rose-400">
-          CHOKE RISK — {open.station_name} {open.channel_name} (VCI {open.vci_score})
+        <div className="flex items-center gap-2 min-w-0">
+          <p className="text-[13px] font-bold text-slate-900 dark:text-white tracking-tight truncate">
+            {open.station_name} — {open.channel_name} is at choke level
+          </p>
+          <span className="px-2 py-0.5 rounded-full bg-rose-500/10 border border-rose-500/25 font-mono text-[9px] font-bold text-rose-400 shrink-0">
+            VCI {open.vci_score}
+          </span>
+        </div>
+        <p className="text-[11px] text-slate-600 dark:text-slate-400 truncate">
+          Exiting is severely congested. Send station staff to {open.channel_name} now.
         </p>
-        <p className="text-[11px] text-slate-500 dark:text-slate-400">
+        <p className="font-mono text-[9px] text-slate-500 dark:text-slate-400 mt-0.5">
           Raised {new Date(open.raised_at).toLocaleTimeString("en-GB")}
-          {timer && <span className="ml-2 font-mono text-rose-400">SLA {timer}</span>}
+          {timer && <span className="ml-2 text-rose-400 font-bold">respond within {timer}</span>}
         </p>
       </div>
+
       <button
         type="button"
         onClick={() => acknowledge({ alertId: open.alert_id, note: "Operator acknowledged" })}
-        className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-500 shadow-md shadow-rose-600/25 border border-rose-400/30 transition-all duration-150 active:scale-95 shrink-0"
+        className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-500 shadow-md shadow-rose-600/25 border border-rose-400/30 transition-all duration-150 active:scale-95 shrink-0"
       >
+        <UserCheck size={14} />
         Acknowledge & Dispatch
       </button>
     </div>

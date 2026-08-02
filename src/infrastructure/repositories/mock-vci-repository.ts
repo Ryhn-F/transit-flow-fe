@@ -29,7 +29,7 @@ const HISTORY_STEP_MS = 15 * 60_000;
 
 const DELIVERY_DELAY_MS: Record<string, number> = {
   TELEGRAM: 2_000,
-  DISCORD: 5_000,
+  WHATSAPP: 5_000,
   EMAIL: 12_000,
 };
 
@@ -138,7 +138,7 @@ class MockVCIRepository implements VCIRepository {
     });
     this.alerts.unshift(alert);
 
-    for (const channel of ["TELEGRAM", "DISCORD", "EMAIL"] as const) {
+    for (const channel of ["TELEGRAM", "WHATSAPP", "EMAIL"] as const) {
       this.counter += 1;
       const delivery: ChannelDelivery = channelDeliverySchema.parse({
         delivery_id: `DLV-${String(100 + this.counter).padStart(3, "0")}`,

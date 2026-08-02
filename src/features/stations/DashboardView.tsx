@@ -142,49 +142,49 @@ export function DashboardView() {
 
   return (
     <AppShell>
-      {/* Choke alert banner (slides under top bar) */}
-      <ChokeAlertBanner />
+      {/* Map area — banner flows above; all floating controls anchor to the map area below it */}
+      <div className="absolute inset-0 flex flex-col">
+        <ChokeAlertBanner />
+        <div className="relative flex-1 min-h-0">
+          <MapCanvas onMapReady={handleMapReady} />
+          <VciHeatmapLayer map={mapInstance} enabled={layers.vciHeatmap} />
+          <VciInspectorPopover map={mapInstance} />
 
-      {/* Full-bleed map */}
-      <div className="absolute inset-0">
-        <MapCanvas onMapReady={handleMapReady} />
-        <VciHeatmapLayer map={mapInstance} enabled={layers.vciHeatmap} />
-        <VciInspectorPopover map={mapInstance} />
-      </div>
+          {/* Spatial Draw & Layer Controls */}
+          <MapDrawControl
+            isEditing={isEditing}
+            onToggleEdit={handleToggleEdit}
+            onExportGeoJSON={handleExportGeoJSON}
+            featuresCount={stationsData?.features?.length || 0}
+          />
 
-      {/* Spatial Draw & Layer Controls */}
-      <MapDrawControl
-        isEditing={isEditing}
-        onToggleEdit={handleToggleEdit}
-        onExportGeoJSON={handleExportGeoJSON}
-        featuresCount={stationsData?.features?.length || 0}
-      />
-
-      {/* Overlay column — top-left floating panels */}
-      <div className="absolute top-4 left-4 flex flex-col gap-3 z-10 pointer-events-none">
-        {selectedStation && (
-          <div className="pointer-events-auto">
-            <StationInfoCard station={selectedStation} />
+          {/* Overlay column — top-left floating panels */}
+          <div className="absolute top-4 left-4 flex flex-col gap-3 z-10 pointer-events-none">
+            {selectedStation && (
+              <div className="pointer-events-auto">
+                <StationInfoCard station={selectedStation} />
+              </div>
+            )}
+            <div className="pointer-events-auto">
+              <ActiveLayersPanel />
+            </div>
+            <div className="pointer-events-auto overflow-y-auto max-h-64">
+              <LiveAlertsPanel />
+            </div>
+            <div className="pointer-events-auto">
+              <AlertChannelFeed />
+            </div>
           </div>
-        )}
-        <div className="pointer-events-auto">
-          <ActiveLayersPanel />
-        </div>
-        <div className="pointer-events-auto overflow-y-auto max-h-64">
-          <LiveAlertsPanel />
-        </div>
-        <div className="pointer-events-auto">
-          <AlertChannelFeed />
+
+          {/* Recalc countdown chip — bottom-left */}
+          <div className="absolute bottom-4 left-4 z-10">
+            <RecalcCountdown />
+          </div>
+
+          {/* Stats footer */}
+          <StatsFooter />
         </div>
       </div>
-
-      {/* Recalc countdown chip — bottom-left */}
-      <div className="absolute bottom-4 left-4 z-10">
-        <RecalcCountdown />
-      </div>
-
-      {/* Stats footer */}
-      <StatsFooter />
     </AppShell>
   );
 }

@@ -161,18 +161,18 @@ export function seededDeliveries(now: number): ChannelDelivery[] {
 
   return [
     mk("DLV-001", "VCI-AL-901", "TELEGRAM", 95, "DELIVERED", 5760),
-    mk("DLV-002", "VCI-AL-901", "DISCORD", 95, "DELIVERED", 5745),
+    mk("DLV-002", "VCI-AL-901", "WHATSAPP", 95, "DELIVERED", 5745),
     mk("DLV-003", "VCI-AL-901", "EMAIL", 95, "DELIVERED", 5720),
     mk("DLV-004", "VCI-AL-902", "TELEGRAM", 79, "DELIVERED", 4740),
-    mk("DLV-005", "VCI-AL-902", "DISCORD", 79, "DELIVERED", 4725),
+    mk("DLV-005", "VCI-AL-902", "WHATSAPP", 79, "DELIVERED", 4725),
     mk("DLV-006", "VCI-AL-903", "TELEGRAM", 54, "DELIVERED", 3240),
-    mk("DLV-007", "VCI-AL-903", "DISCORD", 54, "DELIVERED", 3225),
+    mk("DLV-007", "VCI-AL-903", "WHATSAPP", 54, "DELIVERED", 3225),
     mk("DLV-008", "VCI-AL-903", "EMAIL", 54, "DELIVERED", 3228),
     mk("DLV-009", "VCI-AL-904", "TELEGRAM", 39, "DELIVERED", 2340),
-    mk("DLV-010", "VCI-AL-904", "DISCORD", 39, "DELIVERED", 2325),
+    mk("DLV-010", "VCI-AL-904", "WHATSAPP", 39, "DELIVERED", 2325),
     mk("DLV-011", "VCI-AL-905", "TELEGRAM", 21, "DELIVERED", 1260),
     mk("DLV-012", "VCI-AL-906", "TELEGRAM", 8, "DELIVERED", 480),
-    mk("DLV-013", "VCI-AL-906", "DISCORD", 8, "DELIVERED", 465),
+    mk("DLV-013", "VCI-AL-906", "WHATSAPP", 8, "DELIVERED", 465),
     mk("DLV-014", "VCI-AL-906", "EMAIL", 8, "DELIVERED", 440),
     mk("DLV-015", "VCI-AL-906", "EMAIL", 8, "FAILED", null, 2),
   ];

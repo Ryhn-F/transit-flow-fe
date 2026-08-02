@@ -70,12 +70,12 @@ describe("mock VCI repository", () => {
     deliveries = await repo.getDeliveries(fresh.alert_id);
     const tg = deliveries.find((d) => d.channel === "TELEGRAM")!;
     expect(tg.status).toBe("DELIVERED");
-    expect(deliveries.find((d) => d.channel === "DISCORD")?.status).toBe("QUEUED");
+    expect(deliveries.find((d) => d.channel === "WHATSAPP")?.status).toBe("QUEUED");
     expect(deliveries.find((d) => d.channel === "EMAIL")?.status).toBe("QUEUED");
 
     tick(127);
     deliveries = await repo.getDeliveries(fresh.alert_id);
-    expect(deliveries.find((d) => d.channel === "DISCORD")?.status).toBe("DELIVERED");
+    expect(deliveries.find((d) => d.channel === "WHATSAPP")?.status).toBe("DELIVERED");
 
     tick(134);
     deliveries = await repo.getDeliveries(fresh.alert_id);
