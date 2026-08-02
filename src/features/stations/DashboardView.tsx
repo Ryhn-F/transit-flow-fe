@@ -15,11 +15,18 @@ import { useStationUIStore } from "./store/station-ui-store";
 import { toast } from "sonner";
 import { useVCIDriver } from "@/infrastructure/mock/use-vci-driver";
 import { useBufferDriver } from "@/infrastructure/mock/use-buffer-driver";
+import { useWeatherDriver } from "@/infrastructure/mock/use-weather-driver";
 import { VciHeatmapLayer } from "@/features/vci/components/vci-heatmap-layer";
 import { VciInspectorPopover } from "@/features/vci/components/vci-inspector-popover";
 import { ChokeAlertBanner } from "@/features/vci/components/choke-alert-banner";
 import { AlertChannelFeed } from "@/features/vci/components/alert-channel-feed";
 import { RecalcCountdown } from "@/features/vci/components/recalc-countdown";
+import { RainModeOverlay } from "@/features/weather/components/rain-mode-overlay";
+import { RainfallChip } from "@/features/weather/components/rainfall-chip";
+import { FloodDepthFeed } from "@/features/weather/components/flood-depth-feed";
+import { DetourPanel } from "@/features/weather/components/detour-panel";
+import { RainSafePathModal } from "@/features/weather/components/rain-safe-path-modal";
+import { RainDetourBanner } from "@/features/weather/components/rain-detour-banner";
 import { useSpatialEditor } from "@/features/buffer-allocator/map/use-spatial-editor";
 import { BufferEditorTools } from "@/features/buffer-allocator/components/buffer-editor-tools";
 import { BufferExportButton } from "@/features/buffer-allocator/components/buffer-export-button";
@@ -37,6 +44,7 @@ const STATUS_COLORS: Record<string, string> = {
 export function DashboardView() {
   useVCIDriver();
   useBufferDriver();
+  useWeatherDriver();
   const mapRef = useRef<MapLibreMap | null>(null);
   const markersRef = useRef<Marker[]>([]);
   const [mapInstance, setMapInstance] = useState<MapLibreMap | null>(null);
@@ -144,10 +152,13 @@ export function DashboardView() {
       {/* Map area — banner flows above; all floating controls anchor to the map area below it */}
       <div className="absolute inset-0 flex flex-col">
         <ChokeAlertBanner />
+        <RainDetourBanner />
         <div className="relative flex-1 min-h-0">
           <MapCanvas onMapReady={handleMapReady} />
           <VciHeatmapLayer map={mapInstance} enabled={layers.vciHeatmap} />
           <VciInspectorPopover map={mapInstance} />
+          <RainModeOverlay map={mapInstance} enabled={layers.rainMode} />
+          <RainfallChip />
 
           {/* Buffer allocator — editor tools & layers */}
           {bufferEnabled && (
@@ -179,6 +190,11 @@ export function DashboardView() {
             <div className="pointer-events-auto">
               <AlertChannelFeed />
             </div>
+            {layers.rainMode && (
+              <div className="pointer-events-auto">
+                <FloodDepthFeed />
+              </div>
+            )}
             {bufferEnabled && (
               <>
                 <div className="pointer-events-auto">
@@ -190,6 +206,13 @@ export function DashboardView() {
               </>
             )}
           </div>
+
+          {/* Rain detour panel — bottom-left above countdown */}
+          {layers.rainMode && (
+            <div className="absolute bottom-16 left-4 z-10">
+              <DetourPanel />
+            </div>
+          )}
 
           {/* Recalc countdown chip — bottom-left */}
           <div className="absolute bottom-4 left-4 z-10">
@@ -203,6 +226,9 @@ export function DashboardView() {
 
       {/* Buffer dispatch export modal */}
       <DispatchExportModal />
+
+      {/* Rain Safe-Path commuter preview */}
+      <RainSafePathModal />
     </AppShell>
   );
 }
