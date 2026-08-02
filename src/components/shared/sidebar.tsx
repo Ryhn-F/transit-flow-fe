@@ -9,6 +9,7 @@ import {
   ClipboardList,
   Sparkles,
   Smartphone,
+  MonitorPlay,
   Settings,
   ChevronLeft,
   ChevronRight,
@@ -21,6 +22,7 @@ const navItems = [
   { label: "FIELD SURVEY", href: "/survey", icon: ClipboardList },
   { label: "AI INGESTION", href: "/ai-ingestion", icon: Sparkles },
   { label: "COMMUTER PORTAL", href: "/portal", icon: Smartphone },
+  { label: "COMMAND CENTER", href: "/command-center", icon: MonitorPlay },
 ];
 
 export function Sidebar() {
