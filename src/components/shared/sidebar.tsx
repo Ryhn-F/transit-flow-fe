@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   ClipboardList,
   Sparkles,
+  Smartphone,
   Settings,
   ChevronLeft,
   ChevronRight,
@@ -19,6 +20,7 @@ const navItems = [
   { label: "DASHBOARD", href: "/dashboard", icon: LayoutDashboard },
   { label: "FIELD SURVEY", href: "/survey", icon: ClipboardList },
   { label: "AI INGESTION", href: "/ai-ingestion", icon: Sparkles },
+  { label: "COMMUTER PORTAL", href: "/portal", icon: Smartphone },
 ];
 
 export function Sidebar() {
